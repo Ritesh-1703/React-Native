@@ -1,0 +1,492 @@
+REACT NATIVE DEVELOPMENT SYLLABUS
+(Basic → Expert | University + Industry Level)
+📖 CHAPTER 1: INTRODUCTION TO MOBILE DEVELOPMENT
+1.1 Mobile Application Development Overview
+
+Native vs Hybrid vs Cross-platform
+
+Android vs iOS development models
+
+Performance considerations
+
+1.2 Cross Platform Frameworks
+
+React Native
+
+Flutter
+
+Ionic
+
+Xamarin
+
+1.3 React Native Overview
+
+History of React Native
+
+Meta ecosystem
+
+Advantages of React Native
+
+Limitations
+
+1.4 React Native Architecture Overview
+
+JavaScript Thread
+
+Native Thread
+
+Bridge concept
+
+Fabric Architecture
+
+TurboModules
+
+JSI (JavaScript Interface)
+
+📖 CHAPTER 2: JAVASCRIPT FUNDAMENTALS
+2.1 JavaScript Basics
+
+Variables (var, let, const)
+
+Data types
+
+Operators
+
+Control flow statements
+
+2.2 Functions
+
+Arrow functions
+
+Function expressions
+
+Callback functions
+
+2.3 ES6 Features
+
+Destructuring
+
+Spread operator
+
+Template literals
+
+Modules (import/export)
+
+2.4 Asynchronous JavaScript
+
+Promises
+
+async / await
+
+Error handling
+
+2.5 JavaScript Arrays & Objects
+
+Array methods
+
+Object manipulation
+
+JSON handling
+
+📖 CHAPTER 3: REACT FUNDAMENTALS
+3.1 Introduction to React
+
+React architecture
+
+Virtual DOM
+
+Component-based architecture
+
+3.2 Components
+
+Functional components
+
+Class components
+
+Component lifecycle
+
+3.3 Props
+
+Passing props
+
+Props validation
+
+Default props
+
+3.4 State Management
+
+useState
+
+useEffect
+
+useRef
+
+3.5 React Hooks
+
+Built-in hooks
+
+Custom hooks
+
+📖 CHAPTER 4: REACT NATIVE ENVIRONMENT SETUP
+4.1 Development Environment
+
+Node.js
+
+npm / yarn
+
+Expo CLI
+
+React Native CLI
+
+4.2 Project Setup
+
+Creating React Native project
+
+Folder structure
+
+Running app on emulator
+
+4.3 React Native Project Architecture
+
+App entry point
+
+Metro bundler
+
+Platform-specific code
+
+📖 CHAPTER 5: CORE REACT NATIVE COMPONENTS
+5.1 Basic Components
+
+View
+
+Text
+
+Image
+
+Button
+
+TextInput
+
+5.2 Layout Components
+
+ScrollView
+
+FlatList
+
+SectionList
+
+5.3 Touch Handling
+
+TouchableOpacity
+
+Pressable
+
+Gesture handling basics
+
+📖 CHAPTER 6: STYLING IN REACT NATIVE
+6.1 Styling Basics
+
+StyleSheet API
+
+Inline styles
+
+Flexbox layout
+
+6.2 Layout System
+
+Flex direction
+
+Align items
+
+Justify content
+
+6.3 Responsive Design
+
+Dimensions API
+
+Platform module
+
+PixelRatio
+
+6.4 Theming
+
+Dark mode
+
+Global styles
+
+Styled components
+
+📖 CHAPTER 7: NAVIGATION
+7.1 Navigation Basics
+
+React Navigation introduction
+
+7.2 Navigation Types
+
+Stack Navigator
+
+Tab Navigator
+
+Drawer Navigator
+
+7.3 Navigation Patterns
+
+Passing parameters
+
+Deep linking
+
+Nested navigation
+
+📖 CHAPTER 8: STATE MANAGEMENT
+8.1 Local State
+
+useState
+
+useReducer
+
+8.2 Global State
+
+Context API
+
+8.3 Advanced State Management
+
+Redux
+
+Redux Toolkit
+
+Zustand
+
+8.4 State Architecture
+
+Flux architecture
+
+Data flow patterns
+
+📖 CHAPTER 9: NETWORKING & API INTEGRATION
+9.1 REST API Basics
+
+HTTP methods
+
+API authentication
+
+9.2 API Integration
+
+Fetch API
+
+Axios
+
+9.3 Error Handling
+
+Request handling
+
+Retry logic
+
+9.4 Pagination
+
+Infinite scroll
+
+Lazy loading
+
+📖 CHAPTER 10: LOCAL DATA STORAGE
+10.1 AsyncStorage
+
+Storing user data
+
+Token storage
+
+10.2 Secure Storage
+
+Encrypted storage
+
+Keychain / Keystore
+
+10.3 Offline Data
+
+Local caching
+
+Sync strategies
+
+📖 CHAPTER 11: DATABASE IN REACT NATIVE
+11.1 SQLite
+
+Database setup
+
+CRUD operations
+
+11.2 Realm Database
+
+Realm concepts
+
+Models
+
+11.3 WatermelonDB
+
+Offline-first architecture
+
+Sync with server
+
+📖 CHAPTER 12: FORMS & USER INPUT
+12.1 Form Handling
+
+Controlled inputs
+
+Validation
+
+12.2 Libraries
+
+Formik
+
+React Hook Form
+
+12.3 Validation
+
+Yup validation schema
+
+📖 CHAPTER 13: PERFORMANCE OPTIMIZATION
+13.1 Performance Principles
+
+Reducing re-renders
+
+Memoization
+
+13.2 Optimization Techniques
+
+React.memo
+
+useMemo
+
+useCallback
+
+13.3 List Performance
+
+FlatList optimization
+
+Virtualization
+
+📖 CHAPTER 14: ANIMATIONS
+14.1 Basic Animations
+
+Animated API
+
+14.2 Advanced Animations
+
+Reanimated library
+
+Gesture Handler
+
+14.3 UI Transitions
+
+Screen animations
+
+Micro interactions
+
+📖 CHAPTER 15: NATIVE MODULES
+15.1 Bridging
+
+Native module concept
+
+15.2 Android Native Modules
+
+Kotlin modules
+
+15.3 iOS Native Modules
+
+Swift modules
+
+📖 CHAPTER 16: DEVICE FEATURES
+16.1 Camera
+16.2 Location
+16.3 Push Notifications
+16.4 File System
+16.5 Sensors
+📖 CHAPTER 17: AUTHENTICATION
+17.1 Authentication Concepts
+17.2 JWT Authentication
+17.3 Social Login
+
+Google
+
+Apple
+
+Facebook
+
+📖 CHAPTER 18: FIREBASE INTEGRATION
+18.1 Firebase Setup
+18.2 Firebase Authentication
+18.3 Firestore Database
+18.4 Firebase Cloud Messaging
+18.5 Analytics
+📖 CHAPTER 19: TESTING
+19.1 Unit Testing
+
+Jest
+
+19.2 Component Testing
+
+React Testing Library
+
+19.3 End-to-End Testing
+
+Detox
+
+📖 CHAPTER 20: BUILD & DEPLOYMENT
+20.1 Android Build
+
+APK
+
+AAB
+
+20.2 iOS Build
+
+IPA
+
+20.3 Play Store Deployment
+20.4 App Store Deployment
+📖 CHAPTER 21: SECURITY
+21.1 Data Encryption
+21.2 Secure API Communication
+21.3 Protecting API keys
+21.4 Reverse engineering protection
+📖 CHAPTER 22: ADVANCED REACT NATIVE ARCHITECTURE
+22.1 Clean Architecture
+22.2 Feature-based architecture
+22.3 Scalable project structure
+22.4 Monorepo setups
+📖 CHAPTER 23: EXPERT LEVEL TOPICS
+23.1 React Native New Architecture
+
+Fabric
+
+TurboModules
+
+23.2 Performance Profiling
+23.3 Large Scale Apps
+23.4 Production Debugging
+23.5 Code Review Practices
+🎓 FINAL OUTCOMES
+
+After completing this syllabus, a developer will be able to:
+
+Build production-ready React Native applications
+
+Implement scalable architecture
+
+Optimize performance
+
+Integrate native modules
+
+Deploy apps to Google Play & App Store
+
+Work in enterprise mobile projects
+
+🧠 Advice if you want to become World-Class React Native Developer
+
+Focus on mastering:
+
+1️⃣ JavaScript deeply
+2️⃣ React concepts
+3️⃣ Architecture patterns
+4️⃣ Performance optimization
+5️⃣ Native Android + iOS basics
+
+That combination makes someone elite in React Native.
