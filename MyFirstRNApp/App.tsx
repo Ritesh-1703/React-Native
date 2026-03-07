@@ -6,6 +6,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.text}>Welcome Ritesh</Text>
+      <Text style={styles.text}>My First React Native App</Text>
       <Text style={styles.text}>Counter: {count}</Text>
 
       <Button title="Increase" onPress={() => setCount(count + 1)} />
@@ -21,5 +23,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
+    fontWeight: 'bold',
   },
 });
