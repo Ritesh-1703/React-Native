@@ -1,0 +1,904 @@
+CHAPTER 6: STYLING IN REACT NATIVE:- 
+::::::::::::::::::::::::::::::::::::::::
+
+Unlike web development, React Native does not use CSS files.
+
+Instead, styles are written using JavaScript objects.
+
+Example:
+
+<Text style={{fontSize:20, color:'blue'}}>
+ Hello
+</Text>
+
+React Native styling is based on Flexbox layout system, similar to CSS Flexbox.
+
+6.1 Styling Basics:-
+:::::::::::::::::::::::
+
+There are three common ways to style components:
+
+| Method                     | Usage         |
+| -------------------------- | ------------- |
+| Inline Styles              | quick styling |
+| StyleSheet API             | recommended   |
+| External styling libraries | advanced apps |
+
+
+1️⃣ StyleSheet API (Recommended):-
+:::::::::::::::::::::::::::::::::::::
+
+The StyleSheet API helps organize styles in a clean and reusable way.
+
+Syntax:
+
+StyleSheet.create({
+  styleName: {}
+})
+Example
+import React from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+
+export default function App(){
+
+  return(
+
+    <View style={styles.container}>
+
+      <Text style={styles.title}>
+        React Native Styling
+      </Text>
+
+    </View>
+
+  )
+}
+
+const styles = StyleSheet.create({
+
+  container:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'lightblue'
+  },
+
+  title:{
+    fontSize:24,
+    fontWeight:'bold'
+  }
+
+})
+Why StyleSheet is Better
+
+Benefits:
+
+✔ Better performance
+✔ Code organization
+✔ Reusable styles
+✔ Easier maintenance
+
+2️⃣ Inline Styles:- 
+::::::::::::::::::::::::::
+
+Inline styles are written directly inside components.
+
+Example:
+
+<Text style={{fontSize:20, color:'red'}}>
+ Hello World
+</Text>
+Example
+<View style={{
+  backgroundColor:'yellow',
+  padding:20
+}}>
+  <Text>Hello</Text>
+</View>
+When to Use Inline Styles
+
+Inline styles are useful for:
+
+quick styling
+
+dynamic styles
+
+small components
+
+But large apps should prefer StyleSheet.
+
+Common Styling Properties:- 
+::::::::::::::::::::::::::::::
+
+Some frequently used style properties:
+
+| Property        | Purpose                 |
+| --------------- | ----------------------- |
+| backgroundColor | background color        |
+| padding         | space inside component  |
+| margin          | space outside component |
+| borderRadius    | rounded corners         |
+| fontSize        | text size               |
+| color           | text color              |
+
+Example:
+
+<Text style={{
+  fontSize:22,
+  color:'blue',
+  margin:10
+}}>
+Styled Text
+</Text>
+
+3️⃣ Flexbox Layout:-
+::::::::::::::::::::::::::
+
+React Native uses Flexbox for layout.
+
+Flexbox helps arrange components:
+
+Row
+Column
+Alignment
+Spacing
+
+Good news for you:
+If you used Flutter Row/Column or Android layouts, Flexbox will feel familiar.
+
+Default Layout Direction
+
+In React Native:
+
+flexDirection: column
+
+So items are arranged vertically by default.
+
+Example:
+
+<View>
+  <Text>Item 1</Text>
+  <Text>Item 2</Text>
+  <Text>Item 3</Text>
+</View>
+
+Output:
+
+Item 1
+Item 2
+Item 3
+flexDirection
+
+Controls layout direction.
+| Value  | Meaning    |
+| ------ | ---------- |
+| column | vertical   |
+| row    | horizontal |
+
+Example (Row Layout)
+<View style={{flexDirection:'row'}}>
+
+  <Text>One</Text>
+  <Text>Two</Text>
+  <Text>Three</Text>
+
+</View>
+
+Output:
+
+One   Two   Three
+
+
+justifyContent:-
+:::::::::::::::::::::::
+
+Controls alignment on the main axis.
+
+| Value         | Meaning        |
+| ------------- | -------------- |
+| flex-start    | start          |
+| center        | center         |
+| flex-end      | end            |
+| space-between | equal space    |
+| space-around  | spacing around |
+
+
+Example
+<View style={{
+  flexDirection:'row',
+  justifyContent:'space-between'
+}}>
+alignItems
+
+Controls alignment on the cross axis.
+
+Example:
+
+<View style={{
+  alignItems:'center'
+}}>
+
+Centers items horizontally.
+
+Example Layout:-
+.....................
+import React from 'react'
+import {View, Text} from 'react-native'
+
+export default function App(){
+
+  return(
+
+    <View style={{
+      flex:1,
+      flexDirection:'row',
+      justifyContent:'space-around',
+      alignItems:'center'
+    }}>
+
+      <Text>1</Text>
+      <Text>2</Text>
+      <Text>3</Text>
+
+    </View>
+
+  )
+}
+
+Flex Property:-
+::::::::::::::::::::::
+
+flex controls how much space a component occupies.
+
+Example:
+
+<View style={{flex:1}} />
+<View style={{flex:2}} />
+
+Second view gets twice the space.
+
+Example Layout with Flex
+<View style={{flex:1}}>
+
+  <View style={{flex:1, backgroundColor:'red'}}/>
+
+  <View style={{flex:2, backgroundColor:'blue'}}/>
+
+</View>
+
+Output:
+
+Red section (small)
+Blue section (larger)
+
+justifyContent Values:- 
+::::::::::::::::::::::::::
+| Value         | Behavior                   |
+| ------------- | -------------------------- |
+| flex-start    | items start from beginning |
+| center        | items centered             |
+| flex-end      | items at end               |
+| space-between | equal space between items  |
+| space-around  | equal space around items   |
+| space-evenly  | equal spacing everywhere   |
+
+3️⃣ alignItems:-
+::::::::::::::::::::::
+
+alignItems controls alignment on the cross axis.
+
+Cross axis is perpendicular to the main axis.
+
+Example:
+
+If:
+
+flexDirection: row
+
+then:
+
+main axis = horizontal
+cross axis = vertical
+alignItems Values
+
+| Value      | Behavior       |
+| ---------- | -------------- |
+| flex-start | align at start |
+| center     | align center   |
+| flex-end   | align at end   |
+| stretch    | stretch items  |
+
+
+6.3 Responsive Design:- 
+:::::::::::::::::::::::::::::::
+
+Responsive design means:
+
+UI adjusts automatically to different screen sizes and devices
+
+For example:
+
+Small phone → smaller layout
+Large phone → wider layout
+Tablet → multi-column layout
+
+React Native provides APIs to help achieve this.
+
+1️⃣ Dimensions API:- 
+::::::::::::::::::::::::
+
+The Dimensions API provides the width and height of the device screen.
+
+It helps us build layouts that adapt to screen size.
+
+Import:
+
+import {Dimensions} from 'react-native'
+Getting Screen Size
+const screen = Dimensions.get("window")
+
+Example output:
+
+{
+  width: 360,
+  height: 800,
+  scale: 2,
+  fontScale: 2
+}
+Example: Responsive Box
+import React from 'react'
+import {View, Dimensions, StyleSheet} from 'react-native'
+
+const screenWidth = Dimensions.get("window").width
+
+export default function App(){
+
+  return(
+
+    <View style={styles.container}>
+
+      <View style={[styles.box, {width: screenWidth * 0.8}]} />
+
+    </View>
+
+  )
+}
+
+const styles = StyleSheet.create({
+
+container:{
+flex:1,
+justifyContent:'center',
+alignItems:'center'
+},
+
+box:{
+height:100,
+backgroundColor:'blue'
+}
+
+})
+Explanation
+width: screenWidth * 0.8
+
+This means:
+
+80% of screen width
+
+So on different phones:
+
+Device	Width
+Small phone	288px
+Large phone	400px
+
+The UI automatically adapts.
+
+Listening to Screen Rotation:-
+....................................
+
+Phones may rotate.
+
+Example:
+
+Dimensions.addEventListener("change", ({window}) => {
+  console.log(window.width, window.height)
+})
+
+Now the layout can update on orientation change.
+
+
+2️⃣ Platform Module:-
+::::::::::::::::::::::::::::::
+
+Sometimes Android and iOS need different styling or logic.
+
+Example differences:
+
+| Feature | Android            | iOS               |
+| ------- | ------------------ | ----------------- |
+| shadow  | elevation          | shadow properties |
+| font    | Roboto             | San Francisco     |
+| padding | slightly different |                   |
+
+React Native provides the Platform module.
+
+Import:
+
+import {Platform} from 'react-native'
+Detect Platform
+Platform.OS
+
+Output:
+
+android
+
+or
+
+ios
+Example
+import React from 'react'
+import {View, Text, Platform} from 'react-native'
+
+export default function App(){
+
+  return(
+
+    <View>
+
+      <Text>
+
+        {Platform.OS === "android"
+        ? "Running on Android"
+        : "Running on iOS"}
+
+      </Text>
+
+    </View>
+
+  )
+}
+Platform Specific Styling
+const styles = {
+
+button:{
+padding: Platform.OS === "android" ? 10 : 20
+}
+
+}
+
+Android button:
+
+padding 10
+
+iOS button:
+
+padding 20
+Platform.select()
+
+Better method:
+
+Platform.select({
+  ios: {backgroundColor:'blue'},
+  android: {backgroundColor:'green'}
+})
+
+Example:
+
+const styles = StyleSheet.create({
+
+container:{
+flex:1,
+backgroundColor: Platform.select({
+ios:'lightblue',
+android:'lightgreen'
+})
+}
+
+})
+
+3️⃣ PixelRatio:- 
+:::::::::::::::::::::
+
+Different phones have different pixel densities.
+
+| Device      | Pixel Density |
+| ----------- | ------------- |
+| Low density | 1x            |
+| Medium      | 2x            |
+| High        | 3x            |
+
+
+React Native provides PixelRatio API to handle this.
+
+Import:
+
+import {PixelRatio} from 'react-native'
+Get Device Pixel Density
+PixelRatio.get()
+
+Example output:
+
+3
+
+Meaning:
+
+3 device pixels = 1 layout pixel
+Example: Adjust Font Size
+import React from 'react'
+import {Text, PixelRatio} from 'react-native'
+
+export default function App(){
+
+const fontSize = 16 * PixelRatio.getFontScale()
+
+return(
+
+<Text style={{fontSize}}>
+Responsive Text
+</Text>
+
+)
+
+}
+
+Now text adjusts based on device font scaling.
+
+Example: Pixel Perfect Layout
+PixelRatio.roundToNearestPixel(10.5)
+
+Result:
+
+11
+
+This ensures sharp rendering on high density screens.
+
+Real World Example
+
+Responsive card layout:
+
+import React from 'react'
+import {View, Text, Dimensions} from 'react-native'
+
+const width = Dimensions.get("window").width
+
+export default function App(){
+
+return(
+
+<View style={{
+width: width * 0.9,
+height:150,
+backgroundColor:'lightgray',
+alignSelf:'center',
+marginTop:50
+}}>
+
+<Text style={{fontSize:20}}>
+Responsive Card
+</Text>
+
+</View>
+
+)
+
+}
+
+The card always takes 90% of screen width.
+
+Best Practices for Responsive Design
+
+1️⃣ Use Flexbox instead of fixed sizes.
+
+Example:
+
+flex:1
+
+2️⃣ Use percentage-based width.
+
+Example:
+
+width: Dimensions.get("window").width * 0.9
+
+3️⃣ Avoid fixed pixel values.
+
+Bad:
+
+width: 400
+
+Good:
+
+width: "90%"
+
+4️⃣ Test on different screen sizes.
+
+Example:
+
+small emulator
+
+large emulator
+
+tablet
+
+
+6.4: Theming in React Native.:- 
+::::::::::::::::::::::::::::::::::::::
+Theming is about maintaining a consistent design system across the entire app.
+
+Modern mobile apps support:
+
+Light mode ☀️
+
+Dark mode 🌙
+
+Global color themes
+
+Reusable style systems
+
+Examples of apps that support dark mode:
+
+Instagram
+
+WhatsApp
+
+YouTube
+
+In this section we will study:
+
+1️⃣ Dark Mode
+2️⃣ Global Styles
+3️⃣ Styled Components
+
+6.4 Theming:-
+:::::::::::::::::::::::::::
+
+Theming means creating a centralized design configuration.
+
+Example:
+
+Primary Color
+Background Color
+Text Color
+Font Styles
+Spacing
+
+Instead of writing colors everywhere, we define them once and reuse them.
+
+Example:
+
+backgroundColor: theme.background
+color: theme.text
+
+1️⃣ Dark Mode:-
+:::::::::::::::::::::::::::
+
+Dark mode changes UI colors when the device is set to dark theme.
+
+React Native provides the Appearance API to detect system theme.
+
+Import:
+
+import {Appearance} from 'react-native'
+Detect Current Theme
+const theme = Appearance.getColorScheme()
+
+Output:
+
+light
+
+or
+
+dark
+Example: Dark Mode UI
+import React from 'react'
+import {View, Text, Appearance} from 'react-native'
+
+export default function App(){
+
+const colorScheme = Appearance.getColorScheme()
+
+const isDark = colorScheme === "dark"
+
+return(
+
+<View style={{
+flex:1,
+justifyContent:'center',
+alignItems:'center',
+backgroundColor: isDark ? "#000" : "#fff"
+}}>
+
+<Text style={{
+color: isDark ? "#fff" : "#000"
+}}>
+
+Hello React Native
+
+</Text>
+
+</View>
+
+)
+
+}
+Result
+
+If device theme is:
+
+Light mode:
+
+White background
+Black text
+
+Dark mode:
+
+Black background
+White text
+Auto Updating Theme
+
+To respond when the user changes device theme:
+
+Appearance.addChangeListener(({colorScheme}) => {
+ console.log(colorScheme)
+})
+
+Now the UI updates automatically.
+
+
+2️⃣ Global Styles:-
+:::::::::::::::::::::::::::::::
+
+Large apps use global styles to maintain consistent UI.
+
+Instead of writing styles everywhere:
+
+fontSize:20
+color:"#333"
+
+We create a central style file.
+
+Example folder structure:
+
+src
+ ├── styles
+ │    └── theme.js
+Example Global Theme
+
+theme.js
+
+export const theme = {
+
+colors:{
+primary:"#3498db",
+background:"#ffffff",
+text:"#333333"
+},
+
+spacing:{
+small:8,
+medium:16,
+large:24
+}
+
+}
+Using Global Theme
+import {theme} from './styles/theme'
+
+<Text style={{
+color: theme.colors.text
+}}>
+Hello
+</Text>
+
+Benefits:
+
+✔ consistent design
+✔ easier updates
+✔ scalable apps
+
+Example Global Styles File
+
+globalStyles.js
+
+import {StyleSheet} from 'react-native'
+
+export const globalStyles = StyleSheet.create({
+
+container:{
+flex:1,
+padding:16
+},
+
+title:{
+fontSize:24,
+fontWeight:'bold'
+}
+
+})
+Usage
+import {globalStyles} from './styles/globalStyles'
+
+<View style={globalStyles.container}>
+<Text style={globalStyles.title}>Hello</Text>
+</View>
+
+
+
+3️⃣ Styled Components:-
+:::::::::::::::::::::::::::::::::
+
+Another popular styling method is Styled Components.
+
+Library:
+
+styled-components
+
+It allows writing styles inside components using template syntax.
+
+This approach is very popular in large React applications.
+
+Install Styled Components
+npm install styled-components
+Example Styled Component
+import styled from 'styled-components/native'
+
+const Container = styled.View`
+flex:1;
+justify-content:center;
+align-items:center;
+background-color:lightblue;
+`
+
+const Title = styled.Text`
+font-size:24px;
+font-weight:bold;
+`
+
+export default function App(){
+
+return(
+
+<Container>
+<Title>Hello Styled Components</Title>
+</Container>
+
+)
+
+}
+Benefits of Styled Components
+
+✔ cleaner UI code
+✔ dynamic styling
+✔ reusable components
+✔ better theming support
+
+Styled Components + Theme
+
+Example theme system:
+
+const theme = {
+colors:{
+primary:"#6200ee",
+background:"#ffffff"
+}
+}
+
+Use:
+
+<ThemeProvider theme={theme}>
+<App/>
+</ThemeProvider>
+
+Then inside component:
+
+background-color: ${props => props.theme.colors.primary};
+
+
+Comparison:- 
+...................
+
+
+| Method            | Use Case                     |
+| ----------------- | ---------------------------- |
+| StyleSheet        | default React Native styling |
+| Global Styles     | consistent app design        |
+| Styled Components | component-based styling      |

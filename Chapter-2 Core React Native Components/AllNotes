@@ -1,0 +1,654 @@
+5.1 Basic Components:- 
+:::::::::::::::::::::::::::
+
+React Native does not use HTML or XML layouts.
+
+Instead it provides cross-platform components that render native UI on:
+
+Android
+
+iOS
+
+Example:
+
+<View>
+  <Text>Hello</Text>
+</View>
+
+React Native converts this to:
+
+Android → TextView
+
+iOS → UILabel
+
+
+
+1️⃣ View Component:- 
+::::::::::::::::::::::::::
+
+View is the most fundamental component.
+
+Think of it like:
+
+| Technology | Equivalent                     |
+| ---------- | ------------------------------ |
+| Android    | `LinearLayout` / `FrameLayout` |
+| Flutter    | `Container`                    |
+| Web        | `div`                          |
+
+
+View is used to contain other components and layout UI.
+
+Example
+import {View, Text} from 'react-native'
+
+export default function App(){
+  return(
+    <View>
+      <Text>Hello React Native</Text>
+    </View>
+  )
+}
+
+Styled View
+<View style={{
+  backgroundColor:'lightblue',
+  padding:20
+}}>
+  <Text>Hello</Text>
+</View>
+
+
+2️⃣ Text Component:- 
+:::::::::::::::::::::::::::::
+
+Text displays text on the screen.
+
+Important rule:
+
+⚠️ Text must always be inside a Text component.
+
+Wrong ❌
+
+<View>
+  Hello
+</View>
+
+Correct ✔
+
+<Text>Hello</Text>
+Example
+<Text style={{fontSize:24}}>
+  Welcome to React Native
+</Text>
+Nested Text
+<Text>
+  Hello <Text style={{fontWeight:'bold'}}>Ritesh</Text>
+</Text>
+
+Output:
+
+Hello Ritesh
+
+with bold text.
+
+
+3️⃣ Image Component:- 
+:::::::::::::::::::::::::::
+
+Image displays images.
+
+Sources can be:
+
+local images
+
+remote URLs
+
+Example (Remote Image)
+import {Image} from 'react-native'
+
+<Image
+  source={{uri:'https://reactnative.dev/img/tiny_logo.png'}}
+  style={{width:100, height:100}}
+/>
+Example (Local Image)
+
+First place image inside project:
+
+assets/logo.png
+
+Then:
+
+<Image
+  source={require('./assets/logo.png')}
+  style={{width:100, height:100}}
+/>
+
+Important:
+
+React Native requires width and height for images
+
+
+4️⃣ Button Component:- 
+:::::::::::::::::::::::::
+
+Button is used to trigger actions.
+
+Example:
+
+import {Button} from 'react-native'
+
+<Button
+  title="Click Me"
+  onPress={() => console.log("Pressed")}
+/>
+Example With State
+import React, {useState} from 'react'
+import {View, Text, Button} from 'react-native'
+
+export default function App(){
+
+  const [count, setCount] = useState(0)
+
+  return(
+
+    <View>
+
+      <Text>Count: {count}</Text>
+
+      <Button
+        title="Increase"
+        onPress={()=> setCount(count+1)}
+      />
+
+    </View>
+
+  )
+}
+
+
+5️⃣ TextInput Component:- 
+::::::::::::::::::::::::::::
+
+TextInput allows users to enter text.
+
+Equivalent to:
+
+| Technology | Equivalent  |
+| ---------- | ----------- |
+| Android    | `EditText`  |
+| Flutter    | `TextField` |
+
+Basic Example
+import {TextInput} from 'react-native'
+
+<TextInput
+  placeholder="Enter your name"
+/>
+Controlled Input Example
+
+import React, {useState} from 'react'
+import {View, TextInput, Text} from 'react-native'
+
+export default function App(){
+
+  const [name, setName] = useState("")
+
+  return(
+
+    <View>
+
+      <TextInput
+        placeholder="Enter name"
+        onChangeText={setName}
+      />
+
+      <Text>Hello {name}</Text>
+
+    </View>
+
+  )
+}
+
+When user types:
+
+Ritesh
+
+UI updates:
+
+Hello Ritesh
+
+
+5.2 Layout Components:- 
+::::::::::::::::::::::::::
+
+Mobile apps frequently display large amounts of content.
+
+Example:
+
+Products
+Messages
+Posts
+Contacts
+Notifications
+
+React Native provides optimized components for these layouts.
+
+
+1️⃣ ScrollView:- 
+:::::::::::::::::::
+
+ScrollView allows users to scroll vertically or horizontally through content.
+
+Equivalent to:
+| Technology | Equivalent              |
+| ---------- | ----------------------- |
+| Android    | `ScrollView`            |
+| Flutter    | `SingleChildScrollView` |
+
+
+Example
+import React from 'react'
+import {ScrollView, Text} from 'react-native'
+
+export default function App(){
+
+  return(
+
+    <ScrollView>
+
+      <Text style={{fontSize:30}}>Item 1</Text>
+      <Text style={{fontSize:30}}>Item 2</Text>
+      <Text style={{fontSize:30}}>Item 3</Text>
+      <Text style={{fontSize:30}}>Item 4</Text>
+      <Text style={{fontSize:30}}>Item 5</Text>
+
+    </ScrollView>
+
+  )
+}
+
+Users can scroll through the items.
+
+Important Limitation
+
+ScrollView renders all items at once.
+
+Example:
+
+1000 items → 1000 components rendered
+
+This causes performance issues.
+
+Therefore, ScrollView should only be used for small content lists.
+
+Example use cases:
+
+✔ Settings screen
+✔ Profile screen
+✔ Small forms
+
+
+2️⃣ FlatList:- 
+:::::::::::::::::::
+
+FlatList is the most important list component in React Native.
+
+It is designed for large datasets.
+
+Unlike ScrollView, it uses lazy loading.
+
+Only visible items are rendered
+
+Equivalent to:
+
+| Technology | Equivalent         |
+| ---------- | ------------------ |
+| Android    | `RecyclerView`     |
+| Flutter    | `ListView.builder` |
+
+
+Example Data
+const data = [
+  {id:'1', name:'Apple'},
+  {id:'2', name:'Banana'},
+  {id:'3', name:'Orange'}
+]
+FlatList Example
+import React from 'react'
+import {FlatList, Text, View} from 'react-native'
+
+export default function App(){
+
+  const data = [
+    {id:'1', name:'Apple'},
+    {id:'2', name:'Banana'},
+    {id:'3', name:'Orange'}
+  ]
+
+  return(
+
+    <FlatList
+      data={data}
+
+      renderItem={({item}) => (
+        <Text style={{fontSize:24}}>
+          {item.name}
+        </Text>
+      )}
+
+      keyExtractor={(item) => item.id}
+    />
+
+  )
+}
+
+
+Important Props :- 
+
+| Prop         | Purpose           |
+| ------------ | ----------------- |
+| data         | list data         |
+| renderItem   | renders each item |
+| keyExtractor | unique key        |
+| horizontal   | horizontal list   |
+| numColumns   | grid layout       |
+
+Example Grid Layout
+<FlatList
+  data={data}
+  numColumns={2}
+  renderItem={({item}) => (
+    <Text>{item.name}</Text>
+  )}
+/>
+
+
+3️⃣ SectionList:- 
+:::::::::::::::::::::::
+
+SectionList is used when list items are grouped into sections.
+
+Example:
+
+Contacts
+
+A
+ - Alex
+ - Adam
+
+B
+ - Brian
+ - Bella
+
+Equivalent to:
+| Technology | Equivalent             |
+| ---------- | ---------------------- |
+| Android    | Sectioned RecyclerView |
+| Flutter    | ListView with groups   |
+
+
+Example Data
+const data = [
+  {
+    title:'Fruits',
+    data:['Apple','Banana','Orange']
+  },
+  {
+    title:'Vegetables',
+    data:['Carrot','Potato','Tomato']
+  }
+]
+SectionList Example
+import React from 'react'
+import {SectionList, Text, View} from 'react-native'
+
+export default function App(){
+
+  const sections = [
+    {
+      title:'Fruits',
+      data:['Apple','Banana','Orange']
+    },
+    {
+      title:'Vegetables',
+      data:['Carrot','Potato','Tomato']
+    }
+  ]
+
+  return(
+
+    <SectionList
+
+      sections={sections}
+
+      renderItem={({item}) => (
+        <Text style={{fontSize:20}}>
+          {item}
+        </Text>
+      )}
+
+      renderSectionHeader={({section}) => (
+        <Text style={{fontSize:24, fontWeight:'bold'}}>
+          {section.title}
+        </Text>
+      )}
+
+      keyExtractor={(item, index) => index.toString()}
+
+    />
+
+  )
+}
+
+::::::::::::::
+Comparison:- 
+:::::::::::::::
+
+| Component   | Best Use      |
+| ----------- | ------------- |
+| ScrollView  | small content |
+| FlatList    | large lists   |
+| SectionList | grouped lists |
+
+5.3 Touch Handling:- 
+::::::::::::::::::::::::::::
+
+In mobile apps users interact with:
+
+Buttons
+
+Cards
+
+Images
+
+List items
+
+Swipe gestures
+
+React Native provides components to detect touch events.
+
+Example interactions:
+
+Tap
+Long press
+Double tap
+Swipe
+Drag
+
+
+1️⃣ TouchableOpacity:-
+:::::::::::::::::::::::::::
+
+TouchableOpacity is one of the most commonly used touch components.
+
+When pressed, it reduces opacity, giving a visual feedback effect.
+
+Example
+import React from 'react'
+import {View, Text, TouchableOpacity} from 'react-native'
+
+export default function App(){
+
+  const handlePress = () => {
+    console.log("Button pressed")
+  }
+
+  return(
+
+    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+      <TouchableOpacity
+        onPress={handlePress}
+        style={{backgroundColor:'blue', padding:15}}
+      >
+
+        <Text style={{color:'white'}}>
+          Press Me
+        </Text>
+
+      </TouchableOpacity>
+
+    </View>
+
+  )
+}
+What Happens
+
+When user taps the button:
+
+Opacity decreases
+↓
+onPress function executes
+
+This creates a native button-like interaction.
+
+TouchableOpacity Common Props
+| Prop          | Purpose                    |
+| ------------- | -------------------------- |
+| onPress       | triggered on tap           |
+| onLongPress   | triggered on long press    |
+| activeOpacity | opacity value when pressed |
+
+
+2️⃣ Pressable:- 
+:::::::::::::::::::
+
+Pressable is the modern replacement for Touchable components.
+
+It provides more control over interaction states.
+
+React Native now recommends Pressable for most cases.
+
+Basic Example
+import {Pressable, Text} from 'react-native'
+
+<Pressable
+  onPress={() => console.log("Pressed")}
+>
+  <Text>Press Here</Text>
+</Pressable>
+Press State Example
+
+Pressable allows styling based on pressed state.
+
+<Pressable
+  onPress={()=> console.log("Pressed")}
+  style={({pressed}) => ({
+    backgroundColor: pressed ? 'gray' : 'blue',
+    padding: 15
+  })}
+>
+
+  <Text style={{color:'white'}}>
+    Pressable Button
+  </Text>
+
+</Pressable>
+
+Behavior:
+
+Press
+↓
+background changes
+↓
+release
+↓
+action executed
+
+Pressable Events
+
+| Event       | Description           |
+| ----------- | --------------------- |
+| onPress     | tap                   |
+| onLongPress | long press            |
+| onPressIn   | finger touches screen |
+| onPressOut  | finger leaves screen  |
+
+3️⃣ Gesture Handling Basics:-
+:::::::::::::::::::::::::::::::::::
+
+Basic touch events include:
+
+Tap
+Long Press
+Drag
+Swipe
+
+For simple gestures React Native uses Pressable / Touchable.
+
+For complex gestures like:
+
+swipe
+
+pinch
+
+drag
+
+developers use gesture libraries such as:
+
+React Native Gesture Handler
+
+React Native Reanimated
+
+These power advanced UI interactions in apps like:
+
+Instagram
+
+TikTok
+
+Practical Example: Clickable Card
+import React from 'react'
+import {View, Text, Pressable} from 'react-native'
+
+export default function App(){
+
+  return(
+
+    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+      <Pressable
+        onPress={()=> alert("Card clicked")}
+        style={{
+          padding:20,
+          backgroundColor:'lightblue',
+          borderRadius:10
+        }}
+      >
+
+        <Text>
+          Clickable Card
+        </Text>
+
+      </Pressable>
+
+    </View>
+
+  )
+}
+
+This pattern is used in:
+
+Product cards
+Profile cards
+List items

@@ -1,0 +1,778 @@
+3.1 Introduction to React:- 
+React is a JavaScript library for building user interfaces.
+Originally created by Meta Platforms.
+It is used in:
+Web apps (React.js)
+Mobile apps (React Native)
+Example apps using React technologies include:
+Instagram
+Facebook
+Discord
+
+React Architecture
+
+React follows a component-based architecture.
+
+Instead of writing one large UI file, we break the UI into small reusable pieces.
+
+Example mobile screen:
+
+Home Screen
+ ├── Header
+ ├── ProfileCard
+ ├── PostList
+ └── Footer
+
+ Each part is a component.
+This is similar to Flutter widgets.
+
+Virtual DOM:- 
+..................
+
+One of React’s most powerful features is the Virtual DOM.
+
+Problem with traditional UI rendering
+
+In traditional apps:
+
+UI change → entire screen redraw
+
+This is expensive.
+
+React Solution
+
+React creates a Virtual DOM (a lightweight copy of the UI).
+
+Process:
+
+UI Change
+   ↓
+Virtual DOM Update
+   ↓
+Diff Algorithm
+   ↓
+Only changed parts update
+
+Example:
+
+Before:
+Hello Ritesh
+
+After:
+Hello Developer
+
+React only updates the text, not the entire UI.
+
+This makes React very efficient.
+
+
+Component-Based Architecture:-
+..................................
+
+React applications are made from components.
+
+Each component:
+
+Has UI
+Has logic
+Can be reused
+
+Example:
+
+Button Component
+Profile Component
+Card Component
+
+Advantages:
+
+✔ Reusable
+✔ Easy to maintain
+✔ Modular architecture
+
+3.2 Components:
+....................
+
+Components are the building blocks of React apps.
+
+There are two types:
+.........................
+
+1️⃣ Functional Components (modern)
+2️⃣ Class Components (legacy)
+
+Functional Components (Recommended)
+
+Modern React uses functional components.
+
+Example:
+:::::::::::::::::::::::::::::::::::::::::::::::::::::
+import React from 'react'
+import {View, Text} from 'react-native'
+
+export default function App(){
+
+  return(
+    <View>
+      <Text>Hello React Native</Text>
+    </View>
+  )
+}
+::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Explanation:
+
+function App() → Component
+return() → UI
+<View> → Container
+<Text> → Text component
+Practical Example
+
+Modify your App.tsx:
+
+import React from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+
+export default function App(){
+
+  return(
+    <View style={styles.container}>
+
+      <Text style={styles.title}>
+        React Fundamentals
+      </Text>
+
+      <Text>
+        Learning Components
+      </Text>
+
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+
+  container:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+
+  title:{
+    fontSize:26,
+    fontWeight:'bold'
+  }
+
+})
+
+Save the file.
+
+Metro will hot reload automatically.
+
+Class Components (Older Approach)
+
+Before React Hooks existed, developers used class components.
+
+Example:
+:::::::::::::::::::::::::::::::::::::::::::::::
+import React, {Component} from 'react'
+import {View, Text} from 'react-native'
+
+class App extends Component{
+
+  render(){
+    return(
+      <View>
+        <Text>Hello React Native</Text>
+      </View>
+    )
+  }
+
+}
+
+export default App
+:::::::::::::::::::::::::::::::::::::::::::::::
+But today functional components + hooks are preferred.
+
+So we rarely write class components now.
+
+
+Component Lifecycle:- 
+::::::::::::::::::::::::::::::::
+
+Lifecycle means different stages of a component's life.
+
+Example stages:
+
+Mount → Component appears on screen
+Update → Data changes
+Unmount → Component removed
+
+Example:
+
+Open Screen → Mount
+Update UI → Update
+Leave Screen → Unmount
+
+
+Component Lifecycle:- 
+::::::::::::::::::::::::::::
+
+Lifecycle means different stages of a component's life.
+
+Example stages:
+
+Mount → Component appears on screen
+Update → Data changes
+Unmount → Component removed
+
+Example:
+
+Open Screen → Mount
+Update UI → Update
+Leave Screen → Unmount
+Lifecycle in Class Components
+
+Old React used lifecycle methods:
+
+componentDidMount()
+componentDidUpdate()
+componentWillUnmount()
+
+Example:
+
+componentDidMount(){
+  console.log("Component loaded")
+}
+Lifecycle in Functional Components
+
+Modern React uses Hooks instead.
+
+Example:
+
+useEffect()
+
+Example code:
+
+useEffect(()=>{
+   console.log("Component mounted")
+},[])
+
+
+
+
+3.3 Props:- 
+::::::::::::::::::::::
+What are Props?
+
+Props (short for properties) are used to pass data from a parent component to a child component.
+
+Think of props like function parameters.
+
+Example idea:
+
+Parent Component → sends data → Child Component
+
+Example:
+
+Parent: App
+Child: Greeting
+React Data Flow (Very Important)
+
+React follows one-way data flow.
+
+Parent Component
+        ↓
+     Props
+        ↓
+Child Component
+
+Data always flows downward.
+
+Child components cannot modify props directly.
+
+Example Without Props
+function Greeting(){
+  return <Text>Hello Ritesh</Text>
+}
+
+This component always shows same text.
+
+Not reusable.
+
+Example With Props
+
+Now we pass dynamic data.
+
+function Greeting(props){
+  return <Text>Hello {props.name}</Text>
+}
+
+Use it like:
+
+<Greeting name="Ritesh"/>
+
+Output:
+
+Hello Ritesh
+
+
+Props with Destructuring (Modern Style):- 
+:::::::::::::::::::::::::::::::::::::::::::::
+
+Instead of writing:
+
+function Greeting(props){
+  return <Text>{props.name}</Text>
+}
+
+Modern React developers write:
+
+function Greeting({name}){
+  return <Text>Hello {name}</Text>
+}
+
+Cleaner and easier to read.
+
+
+Props Validation:- 
+.............................
+
+Props validation helps ensure correct data types are passed.
+
+For example:
+
+name → string
+age → number
+
+In React web projects developers often use:
+
+prop-types library.
+
+Example:
+
+Greeting.propTypes = {
+  name: PropTypes.string
+}
+
+However in React Native projects using TypeScript (like yours), we usually use TypeScript interfaces instead.
+
+Example:
+
+type GreetingProps = {
+  name: string
+}
+
+function Greeting({name}: GreetingProps){
+  return <Text>Hello {name}</Text>
+}
+
+This gives compile-time type safety.
+
+
+Default Props:- 
+.......................
+
+Sometimes props may not be passed.
+
+Example:
+
+<Greeting/>
+
+To avoid errors we use default props.
+
+Example:
+
+function Greeting({name = "Guest"}){
+  return(
+    <Text>Hello {name}</Text>
+  )
+}
+
+Now if no name is provided:
+
+Hello Guest  
+
+
+3.4 State Management:- 
+::::::::::::::::::::::::::::::::
+
+State is data that changes over time and causes the UI to update.
+
+Example in a mobile app:
+
+Counter value
+
+User input
+
+API response
+
+Loading state
+
+Example concept:
+
+State Change → React re-renders UI
+
+This is the core React principle.
+
+useState Hook:- 
+.........................  
+
+useState is a hook used to create and manage state inside functional components.
+
+Syntax:
+
+const [state, setState] = useState(initialValue)
+
+Explanation:
+
+| Part         | Meaning                  |
+| ------------ | ------------------------ |
+| state        | current value            |
+| setState     | function to update state |
+| initialValue | starting value           |
+
+useEffect Hook:- 
+.........................
+
+useEffect handles side effects in components.
+
+Side effects include:
+
+API calls
+
+timers
+
+subscriptions
+
+logging
+
+fetching data
+
+Syntax:
+
+useEffect(() => {
+
+}, [])
+
+Lifecycle Equivalent:- 
+..........................
+
+useEffect replaces old lifecycle methods.
+
+| Class Component      | useEffect        |
+| -------------------- | ---------------- |
+| componentDidMount    | useEffect + []   |
+| componentDidUpdate   | useEffect        |
+| componentWillUnmount | cleanup function |
+
+
+
+useRef Hook:- 
+.....................
+
+useRef stores a mutable value that does NOT trigger re-render.
+
+Syntax:
+
+const ref = useRef(initialValue)
+
+Example:
+
+ref.current
+Example: Counting Renders
+import React, {useState, useRef} from 'react'
+import {View, Text, Button} from 'react-native'
+
+export default function App(){
+
+  const [count, setCount] = useState(0)
+
+  const renderCount = useRef(0)
+
+  renderCount.current = renderCount.current + 1
+
+  return(
+
+    <View>
+
+      <Text>Counter: {count}</Text>
+
+      <Text>Renders: {renderCount.current}</Text>
+
+      <Button
+        title="Increase"
+        onPress={()=> setCount(count+1)}
+      />
+
+    </View>
+
+  )
+}
+
+Here:
+
+count causes re-render
+
+useRef value persists across renders
+
+Common Uses of useRef:- 
+.............................
+
+useRef is often used for:
+
+accessing UI elements
+
+storing timers
+
+storing previous state values
+
+Example:
+
+const inputRef = useRef()
+
+
+Comparison of Hooks:-
+............................
+
+| Hook      | Purpose                  |
+| --------- | ------------------------ |
+| useState  | manage state             |
+| useEffect | side effects             |
+| useRef    | persistent mutable value |
+
+
+3.5 React Hooks:- 
+.........................
+What are Hooks?
+
+Hooks are special functions that let you "hook into" React features inside functional components.
+
+Before hooks existed:
+
+Developers had to use class components for state and lifecycle.
+
+Now with hooks:
+
+Functional Components → State + Lifecycle + Logic
+
+Hooks make code:
+
+✔ cleaner
+✔ reusable
+✔ easier to maintain
+
+Rules of Hooks (Important)
+
+React hooks must follow two rules:
+
+Rule 1:-
+.............
+
+Only call hooks inside React components or custom hooks.
+
+Correct:
+
+function App(){
+  const [count, setCount] = useState(0)
+}
+
+Wrong:
+
+const [count, setCount] = useState(0) // outside component
+
+
+Rule 2:-
+................
+
+Hooks must always be called at the top level.
+
+❌ Wrong
+
+if(condition){
+  useEffect(()=>{})
+}
+
+✔ Correct
+
+useEffect(()=>{})
+
+
+Built-in Hooks:-
+:::::::::::::::::::
+
+React provides several built-in hooks.
+
+Common ones used in React Native apps:
+
+| Hook        | Purpose                      |
+| ----------- | ---------------------------- |
+| useState    | manage component state       |
+| useEffect   | lifecycle / side effects     |
+| useRef      | persistent mutable reference |
+| useContext  | share data across components |
+| useReducer  | complex state logic          |
+| useMemo     | performance optimization     |
+| useCallback | memoized functions           |
+
+
+
+useContext (Shared State):- 
+:::::::::::::::::::::::::::::::::
+
+Used when multiple components need the same data.
+
+Example:
+
+App
+ ├── Screen1
+ ├── Screen2
+ └── Screen3
+
+Instead of passing props everywhere, we use context.
+
+Example:
+
+const ThemeContext = React.createContext()
+
+Then components can access it.
+
+This is similar to Provider pattern used in Flutter.
+
+
+useReducer (Advanced State Management):-
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+useReducer is used when state logic becomes complex.
+
+Instead of:
+
+setState(...)
+
+We use:
+
+dispatch(action)
+
+Example concept:
+
+Action → Reducer → New State
+
+This pattern is similar to:
+
+Redux
+
+Android ViewModel reducers
+
+Example:
+
+const [state, dispatch] = useReducer(reducer, initialState)
+
+:::::::::::::::::::::::::::::::::::::::::::::
+useMemo (Performance Optimization):- 
+:::::::::::::::::::::::::::::::::::::::::::::
+
+useMemo prevents expensive recalculations.
+
+Example:
+
+const result = useMemo(()=>{
+   return heavyCalculation()
+}, [dependency])
+
+It only recalculates when dependencies change.
+
+useCallback:-
+:::::::::::::::::::::::::::::
+
+Used to memoize functions.
+
+Example:
+
+const handleClick = useCallback(()=>{
+  doSomething()
+}, [])
+
+This improves performance when passing functions to child components.
+
+:::::::::::::::::::::::::::::::::::::::::
+Custom Hooks:- 
+:::::::::::::::::::::::::::::::::::::::::::
+
+Custom hooks allow you to reuse logic across components.
+
+Instead of repeating code in many components, you create a hook.
+
+Example naming rule:
+
+Hook name must start with "use"
+
+Example:
+
+useFetch
+useAuth
+useCounter
+Example Custom Hook
+
+Let's create a counter hook.
+
+Custom Hook:- 
+.....................
+import {useState} from 'react'
+
+export function useCounter(){
+
+  const [count, setCount] = useState(0)
+
+  const increment = () => setCount(count + 1)
+  const decrement = () => setCount(count - 1)
+
+  return {
+    count,
+    increment,
+    decrement
+  }
+}
+..........................
+Using Custom Hook:- 
+..........................
+
+Inside component:
+
+import {useCounter} from './useCounter'
+
+function App(){
+
+  const {count, increment, decrement} = useCounter()
+
+  return(
+    <View>
+      <Text>{count}</Text>
+      <Button title="+" onPress={increment}/>
+      <Button title="-" onPress={decrement}/>
+    </View>
+  )
+}
+
+Now the logic is reusable.
+
+Why Custom Hooks Are Powerful
+
+Example real-world hooks:
+
+useAuth() → authentication logic
+useApi() → API requests
+useLocation() → GPS data
+useTheme() → app theme
+
+These are used heavily in large React Native apps.
+
+Built-in Hooks:- 
+:::::::::::::::::::::
+
+| Hook        | Purpose               |
+| ----------- | --------------------- |
+| useState    | state                 |
+| useEffect   | lifecycle             |
+| useRef      | reference             |
+| useContext  | global data           |
+| useReducer  | complex state         |
+| useMemo     | optimize calculations |
+| useCallback | optimize functions    |
