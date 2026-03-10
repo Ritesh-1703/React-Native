@@ -262,6 +262,19 @@
 
     Data flow patterns
 
+    8.5 Memoization & Derived State
+    useMemo
+    useCallback
+
+    8.6 State Persistence
+    AsyncStorage
+    Redux Persist
+
+    8.7 Server State Management
+    React Query / TanStack Query
+
+    8.8 State Normalization
+
     📖 CHAPTER 9: NETWORKING & API INTEGRATION
     9.1 REST API Basics
 

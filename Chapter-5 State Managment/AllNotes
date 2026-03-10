@@ -1,0 +1,2096 @@
+📖 CHAPTER 8: STATE MANAGEMENT
+:::::::::::::::::::::::::::::::::
+8.1 Local State:-
+::::::::::::::::::::::
+
+Local state means data stored inside a component.
+
+Example data stored in local state:
+
+Counter value
+Form input
+Toggle switch
+Loading state
+Modal visibility
+
+Example concept:
+
+User action
+     ↓
+State changes
+     ↓
+UI re-renders
+
+React automatically updates the UI when state changes.
+
+1️⃣ useState:- 
+::::::::::::::::::::
+
+useState is the simplest and most commonly used state hook.
+
+Syntax
+const [state, setState] = useState(initialValue)
+
+Explanation:
+| Part         | Meaning                  |
+| ------------ | ------------------------ |
+| state        | current value            |
+| setState     | function to update state |
+| initialValue | starting value           |
+
+
+Example 1: Counter
+import React, {useState} from 'react'
+import {View, Text, Button} from 'react-native'
+
+export default function App(){
+
+const [count, setCount] = useState(0)
+
+return(
+
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+<Text style={{fontSize:24}}>
+Count: {count}
+</Text>
+
+<Button
+title="Increase"
+onPress={()=> setCount(count + 1)}
+/>
+
+</View>
+
+)
+
+}
+How it Works
+
+Initial state:
+
+useState(0)
+
+UI shows:
+
+Count: 0
+
+When button pressed:
+
+setCount(count + 1)
+
+React:
+
+State updates
+↓
+Component re-renders
+↓
+UI updates
+Example 2: Toggle State
+import React, {useState} from 'react'
+import {View, Text, Button} from 'react-native'
+
+export default function App(){
+
+const [isOn, setIsOn] = useState(false)
+
+return(
+
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+<Text>{isOn ? "Light ON 💡" : "Light OFF"}</Text>
+
+<Button
+title="Toggle"
+onPress={()=> setIsOn(!isOn)}
+/>
+
+</View>
+
+)
+
+}
+Example 3: TextInput State
+import React, {useState} from 'react'
+import {View, TextInput, Text} from 'react-native'
+
+export default function App(){
+
+const [name, setName] = useState("")
+
+return(
+
+<View>
+
+<TextInput
+placeholder="Enter name"
+onChangeText={setName}
+/>
+
+<Text>Hello {name}</Text>
+
+</View>
+
+)
+
+}
+Important Rules of useState
+State must be updated using setter
+
+❌ Wrong
+
+count = count + 1
+
+✔ Correct
+
+setCount(count + 1)
+State updates trigger re-render
+
+Whenever state changes:
+
+Component re-renders automatically
+
+:::::::::::::::::::::::
+2️⃣ useReducer:- 
+:::::::::::::::::::::::
+
+useReducer is used when state logic becomes complex.
+
+Instead of many useState calls, we manage state using a reducer function.
+
+This pattern is similar to:
+
+| Technology   | Equivalent       |
+| ------------ | ---------------- |
+| Redux        | reducer          |
+| Android MVVM | state reducers   |
+| Flutter      | state management |
+
+
+Reducer Pattern
+
+The flow:
+
+Action
+ ↓
+Reducer
+ ↓
+New State
+Basic Syntax
+const [state, dispatch] = useReducer(reducer, initialState)
+
+| Part     | Meaning                    |
+| -------- | -------------------------- |
+| state    | current state              |
+| dispatch | function to trigger action |
+| reducer  | logic for updating state   |
+
+
+Example: Counter using useReducer
+import React, {useReducer} from 'react'
+import {View, Text, Button} from 'react-native'
+
+const initialState = {count:0}
+
+function reducer(state, action){
+
+switch(action.type){
+
+case "increment":
+return {count: state.count + 1}
+
+case "decrement":
+return {count: state.count - 1}
+
+default:
+return state
+
+}
+
+}
+
+export default function App(){
+
+const [state, dispatch] = useReducer(reducer, initialState)
+
+return(
+
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+<Text style={{fontSize:24}}>
+Count: {state.count}
+</Text>
+
+<Button
+title="Increase"
+onPress={()=> dispatch({type:"increment"})}
+/>
+
+<Button
+title="Decrease"
+onPress={()=> dispatch({type:"decrement"})}
+/>
+
+</View>
+
+)
+
+}
+How useReducer Works
+
+User presses button:
+
+dispatch({type:"increment"})
+
+Reducer receives action:
+
+case "increment"
+
+New state returned:
+
+{count: state.count + 1}
+
+UI updates automatically.
+
+..........................................
+When to Use useState vs useReducer:- 
+...........................................
+
+| Hook       | Best Use            |
+| ---------- | ------------------- |
+| useState   | simple state        |
+| useReducer | complex state logic |
+
+:::::::::::::::::::::::::::::::::::::::::
+8.2 Global State — Context API:- 
+:::::::::::::::::::::::::::::::::::::::::
+
+In local state, data exists inside a single component.
+
+Example:
+
+LoginForm
+   └── useState(email)
+
+But in large apps, multiple screens may need the same data.
+
+Example:
+
+User Info
+Theme
+Language
+Authentication state
+Cart items
+
+If we pass data through many components, we get something called prop drilling.
+
+Problem: Prop Drilling
+
+Example component structure:
+
+App
+ └── Screen
+      └── Header
+           └── UserProfile
+
+If UserProfile needs user data:
+
+App → Screen → Header → UserProfile
+
+We must pass props through every level.
+
+Example:
+
+<Screen user={user} />
+
+This becomes messy in large apps.
+
+Solution: Context API
+
+The Context API allows us to share state globally across components without passing props manually.
+
+Think of Context as a global data store.
+
+Example:
+
+Context Provider
+      ↓
+All components can access the data
+
+
+Core Parts of Context API:- 
+:::::::::::::::::::::::::::::::
+
+There are three main parts:
+| Part          | Purpose         |
+| ------------- | --------------- |
+| createContext | creates context |
+| Provider      | provides data   |
+| useContext    | consumes data   |
+
+
+Step 1: Create Context:- 
+..............................
+
+Create a context file.
+
+Example:
+
+import {createContext} from "react"
+
+export const UserContext = createContext()
+
+
+Step 2: Create Provider:-
+..................................
+
+A Provider stores the global state and wraps the app.
+
+Example:
+
+import React, {useState} from "react"
+import {UserContext} from "./UserContext"
+
+export default function UserProvider({children}){
+
+const [user, setUser] = useState("Ritesh")
+
+return(
+
+<UserContext.Provider value={{user, setUser}}>
+{children}
+</UserContext.Provider>
+
+)
+
+}
+
+Now any component inside the provider can access the data.
+
+Step 3: Wrap the App:-
+............................
+
+Wrap your app with the provider.
+
+Example:
+
+import UserProvider from "./UserProvider"
+
+export default function App(){
+
+return(
+
+<UserProvider>
+<HomeScreen/>
+</UserProvider>
+
+)
+
+}
+Step 4: Access Context:- 
+.............................
+
+Inside any component:
+
+import {useContext} from "react"
+import {UserContext} from "./UserContext"
+
+Example:
+
+function Profile(){
+
+const {user} = useContext(UserContext)
+
+return(
+<Text>Hello {user}</Text>
+)
+
+}
+Full Working Example
+import React, {createContext, useState, useContext} from "react"
+import {View, Text, Button} from "react-native"
+
+const UserContext = createContext()
+
+function Home(){
+
+const {user, setUser} = useContext(UserContext)
+
+return(
+
+<View>
+
+<Text>User: {user}</Text>
+
+<Button
+title="Change User"
+onPress={() => setUser("Amit")}
+/>
+
+</View>
+
+)
+
+}
+
+export default function App(){
+
+const [user, setUser] = useState("Ritesh")
+
+return(
+
+<UserContext.Provider value={{user, setUser}}>
+
+<Home/>
+
+</UserContext.Provider>
+
+)
+
+}
+Data Flow in Context
+Context Provider
+      │
+      ▼
+Child Components
+      │
+      ▼
+useContext() reads data
+Example Use Cases
+
+Context API is used for global app data:
+
+Authentication
+Theme (dark/light mode)
+Language
+User profile
+App settings
+
+Example apps using similar patterns:
+............................................
+
+Instagram → user authentication state
+
+Spotify → theme & playback state
+
+When to Use Context
+
+Good for:
+
+App-wide settings
+User authentication
+Themes
+Localization
+
+Not ideal for very complex state management.
+
+For large apps developers use:
+
+Redux
+
+Zustand
+
+MobX
+
+............................
+Context vs useState:- 
+............................
+
+| Feature  | useState       | Context     |
+| -------- | -------------- | ----------- |
+| Scope    | component      | global      |
+| Use case | local UI state | shared data |
+
+
+Best Practice Folder Structure:- 
+::::::::::::::::::::::::::::::::::::
+
+Example:
+
+src
+ ├── context
+ │     └── AuthContext.js
+ │
+ ├── screens
+ │     └── HomeScreen.js
+ │
+ └── App.js
+
+
+::::::::::::::::::::::::::::::::::::::
+ 8.3: Advanced State Management:- 
+ :::::::::::::::::::::::::::::::::::::
+
+Large apps need centralized state management for things like:
+
+User authentication
+Shopping cart
+Notifications
+API data
+Theme settings
+
+Example real apps:
+
+Uber → ride state management
+
+Airbnb → booking data
+
+Instagram → feed and user state
+
+These apps often use centralized state systems.
+
+1️⃣ Redux:- 
+::::::::::::::::::::
+
+Redux is one of the most popular state management libraries in React.
+
+Redux follows a strict architecture:
+
+Component
+   ↓
+Dispatch Action
+   ↓
+Reducer
+   ↓
+Store (global state)
+   ↓
+UI updates
+
+Redux Core Concepts:- 
+...........................
+
+| Concept  | Purpose                 |
+| -------- | ----------------------- |
+| Store    | global state container  |
+| Action   | describes what happened |
+| Reducer  | updates the state       |
+| Dispatch | sends action to reducer |
+
+
+Redux Data Flow
+User Action
+    ↓
+Dispatch Action
+    ↓
+Reducer updates state
+    ↓
+Store updates
+    ↓
+React re-renders UI
+
+Redux ensures predictable state updates.
+
+Installing Redux
+npm install redux react-redux
+
+But today developers rarely use classic Redux directly.
+
+Instead they use Redux Toolkit.
+
+
+::::::::::::::::::::::::::::::::::::::
+2️⃣ Redux Toolkit (Recommended):-
+:::::::::::::::::::::::::::::::::::::::
+
+Redux Toolkit is the modern official way to use Redux.
+
+It simplifies Redux setup and reduces boilerplate code.
+
+Install:
+
+npm install @reduxjs/toolkit react-redux
+Redux Toolkit Structure
+
+Typical project structure:
+
+src
+ ├── store
+ │     └── store.js
+ │
+ ├── features
+ │     └── counterSlice.js
+ │
+ └── App.js
+Creating a Slice:-
+.............................
+
+Redux Toolkit uses Slices.
+
+Example: counterSlice.js:-
+....................................
+
+import {createSlice} from "@reduxjs/toolkit"
+
+const counterSlice = createSlice({
+
+name:"counter",
+
+initialState:{
+count:0
+},
+
+reducers:{
+increment:(state)=>{
+state.count += 1
+},
+
+decrement:(state)=>{
+state.count -= 1
+}
+
+}
+
+})
+
+export const {increment, decrement} = counterSlice.actions
+export default counterSlice.reducer
+Creating Store
+
+store.js
+
+import {configureStore} from "@reduxjs/toolkit"
+import counterReducer from "./counterSlice"
+
+export const store = configureStore({
+
+reducer:{
+counter: counterReducer
+}
+
+})
+
+
+Connecting Redux to React:-
+::::::::::::::::::::::::::::::
+
+Wrap the app with Provider:-
+....................................
+
+import {Provider} from "react-redux"
+import {store} from "./store"
+
+export default function App(){
+
+return(
+
+<Provider store={store}>
+<HomeScreen/>
+</Provider>
+
+)
+
+}
+Using Redux State
+
+Access state using:
+..............................
+
+useSelector()
+
+Example:
+
+const count = useSelector(state => state.counter.count)
+Updating State
+
+Use dispatch.
+
+Example:
+
+dispatch(increment())
+
+
+Example Redux Component:-
+..............................
+import {useSelector, useDispatch} from "react-redux"
+import {increment} from "./counterSlice"
+
+function Counter(){
+
+const count = useSelector(state => state.counter.count)
+const dispatch = useDispatch()
+
+return(
+
+<View>
+
+<Text>{count}</Text>
+
+<Button
+title="Increase"
+onPress={()=> dispatch(increment())}
+/>
+
+</View>
+
+)
+
+}
+
+:::::::::::::::::::::::
+3️⃣ Zustand:-
+::::::::::::::::::::::::
+
+Zustand is a modern lightweight state management library.
+
+It is much simpler than Redux.
+
+Install:
+
+npm install zustand
+Zustand Store Example
+import {create} from "zustand"
+
+const useStore = create((set) => ({
+
+count:0,
+
+increment: () => set((state) => ({count: state.count + 1}))
+
+}))
+
+Using Zustand:-
+:::::::::::::::::::::::
+const {count, increment} = useStore()
+
+Example component:
+
+import {View, Text, Button} from "react-native"
+import {useStore} from "./store"
+
+export default function Counter(){
+
+const {count, increment} = useStore()
+
+return(
+
+<View>
+
+<Text>{count}</Text>
+
+<Button
+title="Increase"
+onPress={increment}
+/>
+
+</View>
+
+)
+
+}
+
+Comparison of State Management:- 
+::::::::::::::::::::::::::::::::::::::
+| Tool          | Complexity | Best Use    |
+| ------------- | ---------- | ----------- |
+| Context API   | simple     | small apps  |
+| Redux Toolkit | medium     | large apps  |
+| Zustand       | simple     | modern apps |
+
+:::::::::::::::::::::::::::::::
+8.4: State Architecture:- 
+::::::::::::::::::::::::::::::::
+
+As applications grow, managing state becomes complex.
+
+Example large app:
+
+User Authentication
+Notifications
+Messages
+Shopping Cart
+Settings
+
+Without proper architecture, state becomes unpredictable and difficult to debug.
+
+State architecture ensures:
+
+Predictable state updates
+Clear data flow
+Better debugging
+Scalable architecture
+
+One of the most influential architectures used in React is Flux.
+
+1️⃣ Flux Architecture:-
+::::::::::::::::::::::::::::::::
+
+Flux is a design pattern created by Meta Platforms for managing application state.
+
+Flux introduced the concept of unidirectional data flow.
+
+Key Idea of Flux
+
+Instead of data flowing everywhere, Flux enforces:
+
+Single Direction Data Flow
+
+Example flow:
+
+View
+ ↓
+Action
+ ↓
+Dispatcher
+ ↓
+Store
+ ↓
+View (UI updates)
+
+This architecture prevents chaotic state updates.
+
+Components of Flux:-
+:::::::::::::::::::::::
+
+| Component  | Purpose                 |
+| ---------- | ----------------------- |
+| Action     | describes an event      |
+| Dispatcher | sends actions           |
+| Store      | holds application state |
+| View       | UI components           |
+
+
+Flux Data Flow:-
+.......................
+User clicks button
+      ↓
+Action is created
+      ↓
+Dispatcher sends action
+      ↓
+Store updates state
+      ↓
+UI re-renders
+
+This makes the system predictable.
+
+Example Flow in React Native
+
+User presses button:
+
+Increase Counter
+
+Flux flow:
+
+Button Click
+   ↓
+Dispatch Action (INCREMENT)
+   ↓
+Store Updates State
+   ↓
+Component Re-renders
+
+
+Flux vs Traditional Architecture:-
+::::::::::::::::::::::::::::::::::::::::
+
+
+Traditional architecture:-
+::::::::::::::::::::::::::::::::
+
+Component ↔ Component ↔ Component
+
+Data flows in many directions → harder to debug.
+
+Flux architecture:
+
+Component
+   ↓
+Action
+   ↓
+Store
+   ↓
+Component
+
+Only one direction.
+
+Flux in Redux
+
+Redux simplified Flux architecture.
+
+Redux removed the dispatcher and used reducers instead.
+
+Redux architecture:
+
+Component
+   ↓
+Dispatch Action
+   ↓
+Reducer
+   ↓
+Store
+   ↓
+Component
+Visual Comparison
+Flux
+View → Action → Dispatcher → Store → View
+Redux
+View → Action → Reducer → Store → View
+
+Redux is essentially Flux with fewer layers.
+
+::::::::::::::::::::::::::::::
+2️⃣ Data Flow Patterns:- 
+:::::::::::::::::::::::::::::::
+
+Data flow defines how information moves through an application.
+
+Two main patterns exist.
+
+Unidirectional Data Flow
+
+Used by:
+
+React
+
+Redux
+
+React Native
+
+Data moves in one direction only.
+
+Example:
+
+State
+ ↓
+UI
+ ↓
+User Action
+ ↓
+State Update
+
+This pattern makes apps predictable and easy to debug.
+
+Bidirectional Data Flow
+
+Used by frameworks like Angular.
+
+Example:
+
+UI ↔ State
+
+Changes in UI automatically update state and vice versa.
+
+This can become hard to track in large apps.
+
+Example in React Native
+
+Using useState.
+
+const [count, setCount] = useState(0)
+
+Flow:
+
+State
+ ↓
+UI shows count
+ ↓
+User presses button
+ ↓
+setCount()
+ ↓
+State updates
+ ↓
+UI updates
+
+Still unidirectional flow.
+
+Data Flow in Redux Toolkit:-
+.....................................
+
+Example:
+
+Component
+   ↓
+dispatch(increment())
+   ↓
+Reducer
+   ↓
+Store updates
+   ↓
+Component re-renders
+
+This is the Flux-inspired pattern.
+
+Why Flux Architecture Matters:-
+.....................................
+
+Benefits:
+
+✔ Predictable state updates
+✔ Easier debugging
+✔ Better scalability
+✔ Clear architecture
+
+Large apps depend on this structure.
+
+Real App Example
+
+Example navigation + state structure:
+
+App
+ ├── Auth Store
+ ├── User Store
+ ├── Theme Store
+ └── Cart Store
+
+Each store manages specific domain data.
+
+Best Practices for State Architecture
+
+1️⃣ Keep state centralized when possible.
+
+Example:
+
+Auth State
+Cart State
+User State
+
+2️⃣ Separate UI logic and state logic.
+
+Example:
+
+Components → UI
+Stores → state logic
+
+3️⃣ Use reducers for predictable updates.
+
+Example:
+
+Action → Reducer → State
+
+4️⃣ Avoid unnecessary global state.
+
+Some data should stay local to components.
+
+::::::::::::::::::::::::::::::::::::::::::
+8.5: Memoization
+::::::::::::::::::::::::::::::::::::::::::
+What is Memoization?
+
+Memoization is a technique where React remembers the result of an expensive calculation and reuses it instead of recalculating.
+
+Concept:
+
+Expensive calculation
+       ↓
+Result stored in memory
+       ↓
+Reused when inputs don't change
+
+This improves performance in large React Native apps.
+
+Why Memoization is Needed
+
+In React, every state update causes the component to re-render.
+
+Example:
+
+Button pressed
+↓
+State changes
+↓
+Component re-renders
+↓
+All calculations run again
+
+If calculations are expensive, this slows down the app.
+
+Memoization solves this problem.
+
+1️⃣ useMemo:- 
+:::::::::::::::::::::
+
+useMemo is used to memoize values (results of calculations).
+
+Syntax
+const memoizedValue = useMemo(() => {
+   return computeSomething()
+}, [dependencies])
+
+Explanation:
+
+| Part         | Meaning                           |
+| ------------ | --------------------------------- |
+| function     | expensive calculation             |
+| dependencies | values that trigger recalculation |
+
+
+Example Without useMemo:- 
+.................................
+function App(){
+
+const [count, setCount] = useState(0)
+
+const result = expensiveCalculation(count)
+
+return(...)
+}
+
+Every render runs:
+
+expensiveCalculation()
+
+Even if count didn't change.
+
+Example With useMemo:- 
+................................
+import React, {useState, useMemo} from "react"
+import {View, Text, Button} from "react-native"
+
+export default function App(){
+
+const [count, setCount] = useState(0)
+
+const doubleValue = useMemo(() => {
+
+console.log("Calculating...")
+
+return count * 2
+
+}, [count])
+
+return(
+
+<View>
+
+<Text>Count: {count}</Text>
+<Text>Double: {doubleValue}</Text>
+
+<Button
+title="Increase"
+onPress={() => setCount(count + 1)}
+/>
+
+</View>
+
+)
+
+}
+
+Now calculation runs only when count changes.
+
+Real World Example:- 
+::::::::::::::::::::::::::
+
+Example in a shopping app:
+
+Cart Items
+↓
+Total Price Calculation
+
+Without memoization:
+
+Total recalculates every render
+
+With useMemo:
+.......................
+
+Recalculate only when cart changes
+When to Use useMemo
+
+Use it when:
+
+Heavy calculations
+Large lists
+Data transformations
+Filtering or sorting data
+
+Example:
+
+const filteredProducts = useMemo(() => {
+ return products.filter(p => p.price > 100)
+}, [products])
+
+
+
+2️⃣ useCallback:- 
+:::::::::::::::::::::::::::::::::::
+
+useCallback is used to memoize functions.
+
+Sometimes functions are recreated on every render, which causes child components to re-render.
+
+useCallback prevents this.
+
+Syntax
+const memoizedFunction = useCallback(() => {
+   doSomething()
+}, [dependencies])
+Example Without useCallback
+function App(){
+
+const handleClick = () => {
+ console.log("Clicked")
+}
+
+return <Button onPress={handleClick} />
+
+}
+
+Each render creates a new function reference.
+
+This can trigger unnecessary re-renders.
+
+Example With useCallback:- 
+:::::::::::::::::::::::::::::::
+import React, {useCallback} from "react"
+import {Button} from "react-native"
+
+export default function App(){
+
+const handleClick = useCallback(() => {
+
+console.log("Clicked")
+
+}, [])
+
+return(
+
+<Button
+title="Press"
+onPress={handleClick}
+/>
+
+)
+
+}
+
+Now the function is reused across renders.
+
+Real Example with Child Component
+const Child = React.memo(({onClick}) => {
+
+console.log("Child Render")
+
+return <Button title="Click" onPress={onClick} />
+
+})
+
+Parent component:
+..............................
+
+const handleClick = useCallback(() => {
+
+console.log("Clicked")
+
+}, [])
+
+This prevents unnecessary child component re-renders.
+
+useMemo vs useCallback:- 
+:::::::::::::::::::::::::::::
+
+| Hook        | Memoizes  |
+| ----------- | --------- |
+| useMemo     | values    |
+| useCallback | functions |
+
+
+Example:
+
+useMemo(() => calculateTotal(), [cart])
+useCallback(() => handleClick(), [])
+
+
+Visual Understanding:-
+...............................
+Without Memoization
+State change
+↓
+Component re-render
+↓
+All functions and calculations recreated
+With Memoization
+State change
+↓
+React checks dependencies
+↓
+Only required calculations run
+Common Mistake
+
+Developers often overuse memoization.
+
+Memoization itself has a cost.
+
+Bad example:-
+......................
+
+const value = useMemo(() => count + 1, [count])
+
+This calculation is too simple — memoization is unnecessary.
+
+Use memoization only for expensive operations.
+
+:::::::::::::::::::::::::::::::::
+8.6: State Persistence:-
+::::::::::::::::::::::::::::::::::
+
+State persistence allows apps to store data locally on the device.
+
+Common examples:
+
+Authentication tokens
+Theme preferences
+Shopping cart items
+User settings
+Offline data
+
+React Native provides local storage solutions.
+
+1️⃣ AsyncStorage:-
+::::::::::::::::::::
+
+AsyncStorage is the most common local storage API in React Native.
+
+It works like local storage for mobile apps.
+
+Data is stored as key–value pairs.
+
+Example:
+
+key → value
+
+Example storage:
+
+"userToken" → "abc123"
+"theme" → "dark"
+
+Installing AsyncStorage
+npm install @react-native-async-storage/async-storage
+
+
+Importing AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+
+Saving Data:-
+...................
+
+Example: Save a username.
+
+const saveUser = async () => {
+  try {
+    await AsyncStorage.setItem("username", "Ritesh")
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+Explanation:
+
+setItem(key, value)
+Retrieving Data
+const getUser = async () => {
+  const user = await AsyncStorage.getItem("username")
+  console.log(user)
+}
+
+Output:
+
+Ritesh
+
+Removing Data:- 
+::::::::::::::::::::::::::
+await AsyncStorage.removeItem("username")
+Example: Persistent Login
+import React, {useEffect, useState} from "react"
+import {View, Text, Button} from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
+export default function App(){
+
+const [user, setUser] = useState(null)
+
+useEffect(()=>{
+ loadUser()
+},[])
+
+const loadUser = async ()=>{
+ const savedUser = await AsyncStorage.getItem("user")
+ if(savedUser){
+   setUser(savedUser)
+ }
+}
+
+const login = async ()=>{
+ await AsyncStorage.setItem("user","Ritesh")
+ setUser("Ritesh")
+}
+
+return(
+
+<View>
+
+<Text>User: {user}</Text>
+
+<Button
+title="Login"
+onPress={login}
+/>
+
+</View>
+
+)
+
+}
+
+Now the username stays saved even after restarting the app.
+
+When to Use AsyncStorage
+
+Use it for:
+
+Authentication tokens
+User preferences
+Theme settings
+Small data storage
+
+But AsyncStorage is not suitable for large databases.
+
+For large data developers use:
+
+SQLite
+Realm
+WatermelonDB
+
+.............................
+2️⃣ Redux Persist:-
+.............................
+
+If you are using Redux Toolkit, you can persist the Redux store using Redux Persist.
+
+Library:
+
+Redux Persist
+
+It automatically saves Redux state to AsyncStorage.
+
+Installing Redux Persist
+npm install redux-persist
+Basic Setup
+
+Example store configuration.
+......................................
+
+import {configureStore} from "@reduxjs/toolkit"
+import counterReducer from "./counterSlice"
+
+export const store = configureStore({
+ reducer:{
+  counter: counterReducer
+ }
+})
+Add Persistence
+import {persistStore, persistReducer} from "redux-persist"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
+const persistConfig = {
+ key:"root",
+ storage: AsyncStorage
+}
+Wrap Reducer:-
+....................
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+Create store:
+
+export const store = configureStore({
+ reducer: persistedReducer
+})
+
+PersistGate;-
+.....................
+
+Wrap the app with PersistGate.
+
+import {PersistGate} from "redux-persist/integration/react"
+
+<PersistGate loading={null} persistor={persistor}>
+<App/>
+</PersistGate>
+
+This ensures Redux state is loaded before rendering UI.
+
+How Redux Persist Works:- 
+...............................
+
+Flow:
+
+Redux Store
+   ↓
+State saved to AsyncStorage
+   ↓
+App restarts
+   ↓
+State rehydrated
+   ↓
+Redux store restored
+Example Real Use Cases
+
+Redux persistence is used for:
+
+Shopping cart
+User authentication
+Offline data
+App settings
+
+Example apps using persistent state:
+
+Uber
+
+Airbnb
+
+These apps restore state when reopened.
+
+AsyncStorage vs Redux Persist:- 
+:::::::::::::::::::::::::::::::::::::::
+| Feature    | AsyncStorage   | Redux Persist           |
+| ---------- | -------------- | ----------------------- |
+| Type       | storage API    | Redux middleware        |
+| Use case   | manual storage | automatic Redux storage |
+| Complexity | simple         | advanced                |
+
+
+8.7: Server State Management:- 
+:::::::::::::::::::::::::::::::::::
+What is Server State?
+
+Server state is data that lives on a backend server and is fetched into the application.
+
+Examples:
+
+User profile
+Product list
+Messages
+Posts
+Notifications
+
+Example flow:
+
+App
+ ↓
+API request
+ ↓
+Server returns data
+ ↓
+UI displays data
+
+
+Client State vs Server State:-
+:::::::::::::::::::::::::::::::::
+| Type         | Example          |
+| ------------ | ---------------- |
+| Client State | modal open/close |
+| Client State | theme            |
+| Client State | form input       |
+
+| Type         | Example          |
+| ------------ | ---------------- |
+| Server State | API data         |
+| Server State | database records |
+| Server State | remote user data |
+
+
+React Query / TanStack Query:- 
+:::::::::::::::::::::::::::::::::::
+
+Modern library:
+
+TanStack Query
+
+Previously called React Query.
+
+It helps manage server state automatically.
+
+Features:
+
+API caching
+Background refetching
+Error handling
+Loading states
+Pagination
+Infinite scrolling
+
+This library is widely used in modern React and React Native apps.
+
+Installing TanStack Query
+npm install @tanstack/react-query
+Setting Up Query Client
+
+Create a query client.
+
+import {QueryClient} from "@tanstack/react-query"
+
+const queryClient = new QueryClient()
+
+Wrap the app.
+
+import {QueryClientProvider} from "@tanstack/react-query"
+
+<QueryClientProvider client={queryClient}>
+<App/>
+</QueryClientProvider>
+
+Now the entire app can use React Query hooks.
+
+Fetching Data with useQuery
+
+The most important hook is:
+
+useQuery()
+
+Syntax:
+
+useQuery({
+ queryKey: ["users"],
+ queryFn: fetchUsers
+})
+Example API
+
+Example API:
+
+https://jsonplaceholder.typicode.com/users
+React Native Example
+import React from "react"
+import {View, Text, FlatList} from "react-native"
+import {useQuery} from "@tanstack/react-query"
+
+const fetchUsers = async () => {
+ const response = await fetch("https://jsonplaceholder.typicode.com/users")
+ return response.json()
+}
+
+export default function App(){
+
+ const {data, isLoading, error} = useQuery({
+  queryKey:["users"],
+  queryFn: fetchUsers
+ })
+
+ if(isLoading) return <Text>Loading...</Text>
+
+ if(error) return <Text>Error loading data</Text>
+
+ return(
+
+ <FlatList
+ data={data}
+ keyExtractor={(item)=> item.id.toString()}
+ renderItem={({item})=>(
+   <Text>{item.name}</Text>
+ )}
+ />
+
+ )
+
+}
+What Happens Internally
+App loads
+ ↓
+React Query fetches API
+ ↓
+Data stored in cache
+ ↓
+UI updates automatically
+
+If the user revisits the screen:
+
+Data loads instantly from cache
+Automatic Refetching
+
+React Query automatically updates data.
+
+Example:
+
+User returns to screen
+ ↓
+Data automatically refetched
+
+You can configure this behavior.
+
+Example:
+
+useQuery({
+ queryKey:["users"],
+ queryFn: fetchUsers,
+ refetchOnWindowFocus: true
+})
+Mutations (Updating Server Data)
+
+To send data to the server we use:
+
+useMutation()
+
+Example:
+
+import {useMutation} from "@tanstack/react-query"
+
+const mutation = useMutation({
+ mutationFn: addUser
+})
+
+Call mutation:
+
+mutation.mutate(newUser)
+Example Mutation
+const addUser = async (user) => {
+ await fetch("https://api.example.com/users",{
+  method:"POST",
+  body: JSON.stringify(user)
+ })
+}
+Benefits of TanStack Query
+
+Compared to manual API fetching:
+
+Without React Query:
+
+fetch
+loading state
+error handling
+caching
+refetch logic
+
+You must implement everything manually.
+
+With React Query:
+
+API fetching
+Caching
+Error handling
+Auto refetch
+Optimistic updates
+
+Handled automatically.
+
+Real App Example
+
+Example feed system in apps like:
+
+Instagram
+
+Twitter
+
+Flow:
+
+Open feed
+ ↓
+Fetch posts API
+ ↓
+Cache results
+ ↓
+Scroll → load more posts
+
+React Query handles this efficiently.
+
+React Query Folder Structure
+
+Typical project structure:
+
+src
+ ├── api
+ │     └── userApi.js
+ │
+ ├── hooks
+ │     └── useUsers.js
+ │
+ ├── screens
+ │     └── UsersScreen.js
+
+Example hook:
+
+export const useUsers = () =>
+ useQuery({
+  queryKey:["users"],
+  queryFn: fetchUsers
+ })
+Best Practices
+
+1️⃣ Use React Query for server state.
+
+2️⃣ Use Redux/Zustand for client state.
+
+Architecture:
+
+Client State → Redux / Zustand
+Server State → React Query
+
+::::::::::::::::::::::::::::::::::
+8.8: State Normalization
+::::::::::::::::::::::::::::::::::
+What is State Normalization?
+
+State normalization means structuring state in a flat and organized way instead of deeply nested objects.
+
+In large apps, API responses often contain nested data.
+
+Example API response:
+....................................
+
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Post 1",
+      "author": {
+        "id": 10,
+        "name": "John"
+      }
+    }
+  ]
+}
+
+This creates deep nesting in state.
+
+Example state:
+
+state.posts[0].author.name
+
+Deep nesting causes problems:
+........................................
+
+Harder updates
+Duplicate data
+Complex state management
+Slower performance
+
+State normalization solves these problems.
+
+The Idea Behind Normalization
+
+Instead of storing nested objects, we store entities separately and reference them by ID.
+
+Normalized state structure:
+................................
+
+{
+  posts: {
+    byId: {
+      1: { id:1, title:"Post 1", authorId:10 }
+    },
+    allIds: [1]
+  },
+
+  users: {
+    byId: {
+      10: { id:10, name:"John" }
+    },
+    allIds: [10]
+  }
+}
+
+Now the structure is flat and efficient.
+
+Before Normalization
+
+Example nested state:
+
+{
+ posts:[
+  {
+   id:1,
+   title:"Post 1",
+   author:{
+    id:10,
+    name:"John"
+   }
+  }
+ ]
+}
+
+Problems:
+
+Duplicate author data
+Hard to update
+Complex nested updates
+After Normalization
+
+Normalized state:
+......................
+
+{
+ posts:{
+  byId:{
+   1:{id:1,title:"Post 1",authorId:10}
+  },
+  allIds:[1]
+ },
+
+ users:{
+  byId:{
+   10:{id:10,name:"John"}
+  },
+  allIds:[10]
+ }
+}
+
+Benefits:
+
+Fast lookup
+No duplication
+Easier updates
+Cleaner structure
+Why Normalization is Important
+
+Large apps often contain related data.
+
+Example relationships:
+..............................
+
+Users
+Posts
+Comments
+Likes
+
+Without normalization:
+...........................
+
+Posts contain users
+Comments contain users
+Likes contain users
+
+This duplicates the same user many times.
+
+Normalization stores one user record and references it everywhere.
+
+Real Example (Social App)
+...............................
+
+Example structure used in apps like:
+
+Instagram
+
+Twitter
+
+Normalized state:
+
+{
+ users:{
+  byId:{
+   1:{id:1,name:"Alice"},
+   2:{id:2,name:"Bob"}
+  }
+ },
+
+ posts:{
+  byId:{
+   101:{id:101,userId:1,text:"Hello"},
+   102:{id:102,userId:2,text:"React Native"}
+  }
+ }
+}
+
+To get post author:
+
+users[posts[101].userId]
+Benefits of State Normalization
+1️⃣ Faster Updates
+.........................
+
+Updating user data:
+
+users.byId[1].name = "Alice Updated"
+
+Only one place to update.
+
+2️⃣ Avoids Data Duplication
+.................................
+
+Instead of storing user data in many posts:
+
+Store user once
+Reference by ID
+3️⃣ Better Performance
+............................
+
+Lookups become faster.
+
+Example:
+
+posts.byId[101]
+
+Instead of looping through arrays.
+
+Normalization with Redux Toolkit
+
+Redux Toolkit provides createEntityAdapter to manage normalized state.
+
+Example:
+
+import {createEntityAdapter} from "@reduxjs/toolkit"
+
+const usersAdapter = createEntityAdapter()
+
+Initial state:
+.......................
+
+const initialState = usersAdapter.getInitialState()
+
+Add users:
+
+usersAdapter.addMany(state, users)
+
+This automatically creates:
+
+ids
+entities
+
+Example state:
+
+{
+ ids:[1,2,3],
+ entities:{
+ 1:{id:1,name:"Alice"},
+ 2:{id:2,name:"Bob"}
+ }
+}
+Visual Comparison
+Nested State
+Posts
+ └ User
+     └ Comments
+         └ User
+
+Complex structure.
+
+Normalized State
+Users
+Posts
+Comments
+
+Each stored independently.
+
+When to Use State Normalization
+
+Normalization is useful when:
+:::::::::::::::::::::::::::::::::::::
+
+Large datasets
+Relational data
+Redux state management
+Complex API responses
+
+Not necessary for:
+
+Simple UI state
+Small apps
+Temporary state
+Best Practices
+
+1️⃣ Normalize relational data.
+
+Example:
+
+Users
+Posts
+Comments
+
+2️⃣ Use IDs instead of nested objects.
+
+Example:
+
+post.userId
+
+3️⃣ Keep state flat and predictable.
+
+Avoid deep nesting.
