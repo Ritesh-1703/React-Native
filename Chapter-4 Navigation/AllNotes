@@ -1,0 +1,574 @@
+CHAPTER 7: NAVIGATION
+::::::::::::::::::::::::::::::
+7.1 Navigation Basics – React Navigation Introduction:-
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Almost every mobile application has multiple screens. Users move between these screens using navigation.
+
+Examples:
+
+Instagram → Home → Profile → Settings
+
+WhatsApp → Chats → Status → Calls
+
+YouTube → Home → Video → Channel
+
+To manage screen transitions in React Native, developers commonly use a library called React Navigation.
+
+What is React Navigation?:-
+..................................
+
+React Navigation is the most popular navigation library for React Native apps.
+
+It allows developers to:
+
+Navigate between screens
+
+Manage navigation stacks
+
+Pass data between screens
+
+Create tab bars and drawer menus
+
+Think of it like:
+
+| Technology   | Equivalent           |
+| ------------ | -------------------- |
+| Android      | Navigation Component |
+| Flutter      | Navigator            |
+| React Native | React Navigation     |
+
+
+Types of Navigation:- 
+
+React Navigation supports several navigation patterns:
+| Navigation Type     | Use Case              |
+| ------------------- | --------------------- |
+| Stack Navigation    | screen-to-screen flow |
+| Tab Navigation      | bottom tabs           |
+| Drawer Navigation   | side menu             |
+| Material Navigation | Android-style tabs    |
+
+Navigation Methods:- 
+::::::::::::::::::::::::
+
+Common navigation methods:
+| Method     | Description           |
+| ---------- | --------------------- |
+| navigate() | move to screen        |
+| goBack()   | go to previous screen |
+| push()     | push new screen       |
+| replace()  | replace screen        |
+
+
+7.2 Navigation Types:- 
+:::::::::::::::::::::::::::::::
+
+Navigation libraries provide multiple navigation structures.
+
+Example real apps:
+
+App	Navigation Type
+Instagram	Bottom Tabs
+WhatsApp	Tab Navigation
+YouTube	Bottom Tabs
+Google Drive	Drawer Navigation
+
+
+1️⃣ Stack Navigator:- 
+:::::::::::::::::::::::::::::::
+
+Stack Navigator is the most common navigation pattern.
+
+It works like a stack data structure (LIFO).
+
+Example navigation flow:
+
+Home Screen
+   ↓
+Product Screen
+   ↓
+Checkout Screen
+
+When a new screen opens, it is pushed onto the stack.
+
+When going back, the top screen is popped.
+
+Install Stack Navigator
+npm install @react-navigation/native-stack
+Stack Navigation Example
+import React from 'react'
+import {View, Text, Button} from 'react-native'
+
+import {NavigationContainer} from '@react-navigation/native'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+
+const Stack = createNativeStackNavigator()
+
+function HomeScreen({navigation}){
+
+return(
+
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+<Text>Home Screen</Text>
+
+<Button
+title="Go to Profile"
+onPress={()=> navigation.navigate("Profile")}
+/>
+
+</View>
+
+)
+
+}
+
+function ProfileScreen(){
+
+return(
+
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+
+<Text>Profile Screen</Text>
+
+</View>
+
+)
+
+}
+
+export default function App(){
+
+return(
+
+<NavigationContainer>
+
+<Stack.Navigator>
+
+<Stack.Screen name="Home" component={HomeScreen}/>
+<Stack.Screen name="Profile" component={ProfileScreen}/>
+
+</Stack.Navigator>
+
+</NavigationContainer>
+
+)
+
+}
+Stack Navigation Flow
+NavigationContainer
+        │
+   StackNavigator
+      │      │
+   Home   Profile
+
+::::::::::::::::::::::::::::::::: 
+2️⃣ Tab Navigator:- 
+:::::::::::::::::::::::::::::::::
+
+Tab navigation provides tabs at the bottom of the screen.
+
+Example apps using tabs:
+
+Instagram
+
+YouTube
+
+Example UI:
+
+Home | Search | Profile
+Install Tab Navigator
+npm install @react-navigation/bottom-tabs
+Tab Navigator Example
+import React from 'react'
+import {View, Text} from 'react-native'
+
+import {NavigationContainer} from '@react-navigation/native'
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+
+const Tab = createBottomTabNavigator()
+
+function HomeScreen(){
+return(
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+<Text>Home Screen</Text>
+</View>
+)
+}
+
+function ProfileScreen(){
+return(
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+<Text>Profile Screen</Text>
+</View>
+)
+}
+
+export default function App(){
+
+return(
+
+<NavigationContainer>
+
+<Tab.Navigator>
+
+<Tab.Screen name="Home" component={HomeScreen}/>
+<Tab.Screen name="Profile" component={ProfileScreen}/>
+
+</Tab.Navigator>
+
+</NavigationContainer>
+
+)
+
+}
+Tab Layout
+-------------------------
+|                       |
+|       Content        |
+|                       |
+-------------------------
+|  Home   Profile      |
+-------------------------
+
+Tabs remain visible across screens.
+
+3️⃣ Drawer Navigator:- 
+::::::::::::::::::::::::::::::::
+
+Drawer navigation creates a side menu that slides from the left.
+
+Example apps:
+
+Google Drive
+
+Gmail
+
+Example UI:
+
+☰ Menu
+
+Home
+Profile
+Settings
+Logout
+Install Drawer Navigator
+npm install @react-navigation/drawer
+Drawer Navigator Example
+import React from 'react'
+import {View, Text} from 'react-native'
+
+import {NavigationContainer} from '@react-navigation/native'
+import {createDrawerNavigator} from '@react-navigation/drawer'
+
+const Drawer = createDrawerNavigator()
+
+function HomeScreen(){
+return(
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+<Text>Home Screen</Text>
+</View>
+)
+}
+
+function ProfileScreen(){
+return(
+<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+<Text>Profile Screen</Text>
+</View>
+)
+}
+
+export default function App(){
+
+return(
+
+<NavigationContainer>
+
+<Drawer.Navigator>
+
+<Drawer.Screen name="Home" component={HomeScreen}/>
+<Drawer.Screen name="Profile" component={ProfileScreen}/>
+
+</Drawer.Navigator>
+
+</NavigationContainer>
+
+)
+
+}
+Drawer Layout
+☰ Menu
+
+Home
+Profile
+Settings
+
+Users open it by:
+
+Swipe from left
+or
+Press menu icon
+
+
+4️⃣ Material Page Route (Concept):- 
+:::::::::::::::::::::::::::::::::::::::::::::
+
+This concept is often used in Flutter, but it’s useful to understand the comparison.
+
+In Flutter:
+
+Navigator.push(
+ context,
+ MaterialPageRoute(builder: (context) => ProfileScreen()),
+);
+
+In React Native navigation, the equivalent is:
+
+navigation.navigate("Profile")
+
+Both mean:
+
+Push a new screen onto the navigation stack
+
+Comparison of Navigation Types:- 
+::::::::::::::::::::::::::::::::::
+
+| Navigation       | Best For                    |
+| ---------------- | --------------------------- |
+| Stack Navigator  | screen-to-screen navigation |
+| Tab Navigator    | bottom navigation bar       |
+| Drawer Navigator | side menu apps              |
+
+
+7.3 Navigation Patterns:- 
+::::::::::::::::::::::::::::::::
+
+Navigation patterns define how screens communicate and interact within the navigation system.
+
+Example real apps:
+
+Instagram → open profile with user ID
+
+YouTube → open video via URL
+
+WhatsApp → nested chat navigation
+
+:::::::::::::::::::::::::::::
+1️⃣ Passing Parameters:- 
+:::::::::::::::::::::::::::::
+
+Often when navigating, we need to send data from one screen to another.
+
+Example:
+
+Product List Screen
+      ↓
+Product Details Screen
+
+The details screen needs the product ID.
+
+Passing Parameters
+
+Example:
+
+navigation.navigate("Profile", {name:"Ritesh", age:25})
+
+Here we pass an object of parameters.
+
+Accessing Parameters
+
+Inside the destination screen:
+
+function ProfileScreen({route}){
+
+const {name, age} = route.params
+
+return(
+<Text>{name} - {age}</Text>
+)
+
+}
+Full Example
+import React from 'react'
+import {View, Text, Button} from 'react-native'
+
+function HomeScreen({navigation}){
+
+return(
+
+<View>
+
+<Button
+title="Open Profile"
+onPress={()=> navigation.navigate("Profile", {name:"Ritesh"})}
+/>
+
+</View>
+
+)
+
+}
+
+function ProfileScreen({route}){
+
+const {name} = route.params
+
+return(
+<Text>Hello {name}</Text>
+)
+
+}
+Updating Screen Params
+
+Sometimes you need to update parameters.
+
+Example:
+
+navigation.setParams({name:"Amit"})
+
+This updates the route parameters.
+
+::::::::::::::::::::::::
+2️⃣ Deep Linking:- 
+::::::::::::::::::::::::
+
+Deep linking allows users to open a specific screen using a URL.
+
+Example:
+
+myapp://profile/123
+
+This directly opens the profile screen.
+
+Real world examples:
+
+Instagram → instagram.com/user
+
+YouTube → youtube.com/watch?v=123
+
+Why Deep Linking is Important
+
+Deep linking is used for:
+
+Email links
+Push notifications
+Web links
+Marketing campaigns
+Basic Deep Linking Setup
+
+Example configuration:
+
+const linking = {
+prefixes: ['myapp://'],
+config: {
+screens: {
+Profile: 'profile/:id'
+}
+}
+}
+
+Then pass it to NavigationContainer.
+
+<NavigationContainer linking={linking}>
+Example URL
+myapp://profile/101
+
+This opens:
+
+ProfileScreen
+
+With parameter:
+
+id = 101
+
+:::::::::::::::::::::::::::::
+3️⃣ Nested Navigation:- 
+:::::::::::::::::::::::::::::
+
+Large apps usually combine multiple navigation types.
+
+Example structure:
+
+Drawer Navigator
+      │
+   Tab Navigator
+      │
+   Stack Navigator
+
+This is called nested navigation.
+
+Example Structure
+Drawer
+  ├── Home
+  │      └── Stack
+  │           ├── Feed
+  │           └── Details
+  │
+  └── Settings
+Example Code
+const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
+
+Create stack navigator:
+
+function HomeStack(){
+
+return(
+
+<Stack.Navigator>
+
+<Stack.Screen name="Feed" component={FeedScreen}/>
+<Stack.Screen name="Details" component={DetailsScreen}/>
+
+</Stack.Navigator>
+
+)
+
+}
+
+Use inside tabs:
+
+function Tabs(){
+
+return(
+
+<Tab.Navigator>
+
+<Tab.Screen name="Home" component={HomeStack}/>
+<Tab.Screen name="Profile" component={ProfileScreen}/>
+
+</Tab.Navigator>
+
+)
+
+}
+
+Finally:
+
+<NavigationContainer>
+<Tabs/>
+</NavigationContainer>
+Real App Example
+
+Example navigation structure of:
+
+Instagram
+
+Bottom Tabs
+   │
+Home Tab
+   │
+Stack
+Feed
+Post Details
+Comments
+
+
+Navigation Pattern Summary:- 
+| Pattern            | Purpose                   |
+| ------------------ | ------------------------- |
+| Passing Parameters | send data between screens |
+| Deep Linking       | open screens via URL      |
+| Nested Navigation  | combine navigation types  |
