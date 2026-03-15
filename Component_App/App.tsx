@@ -16,9 +16,10 @@ import DimensionsAPI from './src/ResponsiveDesign/DimensionAPI';
 import PlatformExample from './src/ResponsiveDesign/PlatformModule';
 import PixelRatioExample from './src/ResponsiveDesign/PixelRatioEx';
 import DarkMode from './src/Theming/DarkMode';
+import { globalStyles } from './src/Styling/globleStyle';
 export default function App() {
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       {/* <Text>State Management</Text>
       <Counter /> */}
       {/* <Example />
