@@ -15,6 +15,7 @@ import CompleteExample from './src/Styling/CompleteExample';
 import DimensionsAPI from './src/ResponsiveDesign/DimensionAPI';
 import PlatformExample from './src/ResponsiveDesign/PlatformModule';
 import PixelRatioExample from './src/ResponsiveDesign/PixelRatioEx';
+import DarkMode from './src/Theming/DarkMode';
 export default function App() {
   return (
     <View style={styles.container}>
@@ -27,6 +28,7 @@ export default function App() {
       <DimensionsAPI />
       <PlatformExample />
       <PixelRatioExample />
+      <DarkMode />
     </View>
   );
 }
