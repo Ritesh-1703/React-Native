@@ -17,6 +17,7 @@ import PlatformExample from './src/ResponsiveDesign/PlatformModule';
 import PixelRatioExample from './src/ResponsiveDesign/PixelRatioEx';
 import DarkMode from './src/Theming/DarkMode';
 import { globalStyles } from './src/Styling/globleStyle';
+import StyledComponent from './src/Theming/StyledComponent';
 export default function App() {
   return (
     <View style={globalStyles.container}>
@@ -30,6 +31,7 @@ export default function App() {
       <PlatformExample />
       <PixelRatioExample />
       <DarkMode />
+      <StyledComponent />
     </View>
   );
 }
