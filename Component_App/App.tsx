@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  PixelRatio,
+} from 'react-native';
 import Counter from './src/Counter';
 import Example from './src/UseEffect';
 import Example2 from './src/UseRef';
@@ -7,6 +14,7 @@ import StylingExample from './src/Styling/StylingExample';
 import CompleteExample from './src/Styling/CompleteExample';
 import DimensionsAPI from './src/ResponsiveDesign/DimensionAPI';
 import PlatformExample from './src/ResponsiveDesign/PlatformModule';
+import PixelRatioExample from './src/ResponsiveDesign/PixelRatioEx';
 export default function App() {
   return (
     <View style={styles.container}>
@@ -18,6 +26,7 @@ export default function App() {
       <CompleteExample />
       <DimensionsAPI />
       <PlatformExample />
+      <PixelRatioExample />
     </View>
   );
 }
