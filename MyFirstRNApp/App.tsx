@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-
+import BasicNavigation from './src/BasicNavigation';
 export default function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Welcome Ritesh</Text>
-      <Text style={styles.text}>My First React Native App</Text>
-      <Text style={styles.text}>Counter: {count}</Text>
-
-      <Button title="Increase" onPress={() => setCount(count + 1)} />
+    <View>
+      <BasicNavigation />
     </View>
   );
 }
