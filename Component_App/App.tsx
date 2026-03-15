@@ -5,6 +5,8 @@ import Example from './src/UseEffect';
 import Example2 from './src/UseRef';
 import StylingExample from './src/Styling/StylingExample';
 import CompleteExample from './src/Styling/CompleteExample';
+import DimensionsAPI from './src/ResponsiveDesign/DimensitionAPI';
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -14,6 +16,7 @@ export default function App() {
       <Example2 /> */}
       {/* <StylingExample /> */}
       <CompleteExample />
+      <DimensionsAPI />
     </View>
   );
 }
