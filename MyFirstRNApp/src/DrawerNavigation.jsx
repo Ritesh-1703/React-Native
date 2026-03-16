@@ -1,14 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import DrawerNavigation from './DrawerNavigation';
-const Tab = createBottomTabNavigator();
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+const Drawer = createDrawerNavigator();
 
 function Home() {
   return (
     <View>
-      <DrawerNavigation />
       <Text>Home Screen</Text>
     </View>
   );
@@ -22,13 +21,13 @@ function Profile() {
   );
 }
 
-export default function TabNavigation() {
+export default function DrawerNavigation() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Profile" component={Profile} />
-      </Tab.Navigator>
+      <Drawer.Navigator>
+        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Profile" component={Profile} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
