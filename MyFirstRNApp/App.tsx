@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import BasicNavigation from './src/BasicNavigation';
+import TabNavigation from './src/TabNavigation';
 export default function App() {
   return (
     <View>
       <BasicNavigation />
+      <TabNavigation />
     </View>
   );
 }
