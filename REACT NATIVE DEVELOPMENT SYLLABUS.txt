@@ -237,6 +237,8 @@
 
     Nested navigation
 
+    Protected routes
+
     📖 CHAPTER 8: STATE MANAGEMENT
     8.1 Local State
 
